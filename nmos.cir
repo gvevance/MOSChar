@@ -1,0 +1,13 @@
+NMOS gm/ID circuit
+
+.include ibm013.lib
+
+* Parameters 
+.param vg=1 vd=1 len=0.13u width=1.3u lmin=0.13u
+
+* Circuit definition
+vgs 1 0 dc {vg} ac 0
+vds 2 0 dc {vd} ac 0
+mn 2 1 0 0 CMOSN l={len} w={width} ad={2*lmin*width} as={2*lmin*width} ps={4*lmin+1*width} pd={4*lmin+1*width}
+
+.end
