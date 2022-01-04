@@ -16,14 +16,14 @@ contents = f'''NMOS characterisation
 * Defining arameters 
 *************************************
 .param len = 0.13u
-.param width = 1.3u 
+.param width = 100u 
 .param lmin = 0.13u
 
 *************************************
 * Circuit definition
 *************************************
 vgs 1 0 dc 0.5
-M1 1 1 0 0 nmos l={len} w={width} as={2*lmin*width} ad={2*lmin*width} ps={4*lmin+2*width} pd={4*lmin+2*width}
+M1 1 1 0 0 nmos l={{len}} w={{width}} as={{2*lmin*width}} ad={{2*lmin*width}} ps={{4*lmin+2*width}} pd={{4*lmin+2*width}}
 
 *************************************
 * Control section
@@ -36,8 +36,6 @@ save @M1[id], @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg], @M1[cds] ,
 
 * DC sweep
 dc vgs 0 1.3 0.01
-
-* echo "$&@M1[id] , $&@M1[gm] , $&@M1[gds] , $&@M1[vth0] , $&@M1[cgs] , $&@M1[cgg] , $&@M1[cds] , $&@M1[cdd] , $&@M1[gmbs] , $&@M1[vsat] , $&@M1[vdsat] \n" >> output.csv
 
 * Run the sim
 run
@@ -69,6 +67,9 @@ wrdata output.csv @M1[id], @M1[vdsat], @M1[cgs], @M1[cgg], @M1[cds]
 .end
 
 '''
+
+# TODO : clear output.csv before running ngspice
+#! do length sweep in ngspice code and write it all at oncce
 
 with open(filename,"w") as file:
     file.write(contents)
