@@ -1,0 +1,11 @@
+test
+vin 1 0 dc 1
+r1 1 0 2k
+
+.dc vin 0 10 0.1
+
+.control
+run
+plot -vin#branch
+.endc
+.end
