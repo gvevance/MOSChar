@@ -111,6 +111,7 @@ cgs_wid    = cgs/width
 gmbs_wid   = gmbs/width
 cdd_wid    = cdd/width
 cds_wid    = cds/width
+gm_by_gmbs = gm/gmbs
 
 # Plotting relevant figures
 
@@ -190,6 +191,14 @@ plt.figure(9)
 plt.plot(gm_by_id,np.log10(gain))
 plt.title("log10(Gain) vs gm/Id")
 plt.ylabel("log10(gm/gds)")
+plt.xlabel("gm/Id")
+plt.grid(True)
+plt.show()
+
+plt.figure(10)
+plt.plot(gm_by_id,np.log10(gm_by_gmbs))
+plt.title("log10(gm/gmbs) vs gm/Id")
+plt.ylabel("log10(gm/gmbs)")
 plt.xlabel("gm/Id")
 plt.grid(True)
 plt.show()
