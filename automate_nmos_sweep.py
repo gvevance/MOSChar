@@ -7,6 +7,8 @@ from subprocess import call
 import numpy as np
 import matplotlib.pyplot as plt
 
+# define constants
+ 
 circuit = 'circuit.cir'
 value_file = 'values.txt'
 
@@ -218,10 +220,10 @@ def plot_figures(sim_values,len):
 
 def main():
     
-    print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 0.2u")
+    print("\nAutomated gm/id curve extracting ...")
+    print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 0.2u\n")
     width = str(input("Enter width (in um) : "))
-    len_vec = str(input("Enter lengths (in um) (space-separated) : "))
-    len_list = len_vec.split()
+    len_list = str(input("Enter lengths (in um) (space-separated) : ")).split()
     
     for len in len_list:
         contents = generate_contents(len,width)
