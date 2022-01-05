@@ -1,6 +1,6 @@
 # A more functional version of the script with user input. With length sweep.
 # Program flow - Enter lengths we want to simulate
-# Width is fixed (defined as a constant initially)
+# Width is user-input
 # Run the code in a for loop and get back the numpy arrays for post-processing
 
 from subprocess import call
