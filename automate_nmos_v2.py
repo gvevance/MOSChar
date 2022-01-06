@@ -122,7 +122,7 @@ def plot_figures(sim_values,len):
     vgs,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs = sim_values
 
     plt.figure(1) # gm/Id vs vgs
-    plt.plot(vgs,gm_by_id,label='Len = '+len+'u')
+    plt.plot( vgs , gm_by_id , label='Len = '+len+'u' )
     plt.ylabel("gm/Id")
     plt.xlabel("Vgs")
     plt.title("Plot of gm/Id vs Vgs")

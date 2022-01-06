@@ -117,10 +117,10 @@ gm_by_gmbs = gm/gmbs
 # Plotting relevant figures
 
 plt.figure(1)
-plt.plot(gm_by_id,vgs)
-plt.title("Vgs vs gm/Id")
-plt.ylabel("Vgs")
-plt.xlabel("gm/Id")
+plt.plot(vgs,gm_by_id)
+plt.title("gm/Id vs Vgs")
+plt.ylabel("gm/Id")
+plt.xlabel("Vgs")
 plt.grid(True)
 plt.show()
 
