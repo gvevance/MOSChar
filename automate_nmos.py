@@ -4,7 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from subprocess import call
 
-filename = "dummy.cir"
+cir_filename = "temp_nmos.cir"
+value_file = "values_nmos.txt"
 
 contents = f'''NMOS characterisation
 
@@ -45,7 +46,7 @@ set filetype=ascii
 set wr_singlescale
 set wr_vecnames
 
-wrdata output.txt @M1[id], @M1[vdsat], @M1[cgs], @M1[cgg], @M1[cds] 
+wrdata {value_file} @M1[id], @M1[vdsat], @M1[cgs], @M1[cgg], @M1[cds] 
 + @M1[cdd], @M1[gm], @M1[gds], @M1[gmbs], @M1[vth]
 
 * Plot commands
@@ -71,14 +72,14 @@ exit
 
 # TODO : change length and call the above code again. Define the above code in a function
 
-with open(filename,"w") as file:
+with open(cir_filename,"w") as file:
     file.write(contents)
 
-call(["ngspice", "dummy.cir"])
+call(["ngspice", cir_filename])
 
 # start post processing
 
-with open('output.txt') as txtfile :
+with open(value_file) as txtfile :
     temp = np.genfromtxt(txtfile, dtype=float)
 
 # ngspice extracted values

@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 # define constants
  
-circuit = 'circuit.cir'
-value_file = 'values.txt'
+circuit = 'temp_nmos_v2.cir'
+value_file = 'values_nmos_v2.txt'
 
 def generate_contents(len,width):
     
