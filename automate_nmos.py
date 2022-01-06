@@ -6,13 +6,14 @@ from subprocess import call
 
 cir_filename = "temp_nmos.cir"
 value_file = "values_nmos.txt"
+model_file = "130nm_bulk.pm"
 
 contents = f'''NMOS characterisation
 
 *************************************
 * Include model file 
 *************************************
-.include 130nm_bulk.pm
+.include {model_file}
 
 *************************************
 * Defining arameters 

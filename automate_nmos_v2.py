@@ -9,8 +9,9 @@ import matplotlib.pyplot as plt
 
 # define constants
  
-circuit = 'temp_nmos_v2.cir'
+cir_filename = 'temp_nmos_v2.cir'
 value_file = 'values_nmos_v2.txt'
+model_file = '130nm_bulk.pm'
 
 def generate_contents(len,width):
     
@@ -19,7 +20,7 @@ def generate_contents(len,width):
     *************************************
     * Include model file 
     *************************************
-    .include 130nm_bulk.pm
+    .include {model_file}
 
     *************************************
     * Defining arameters 
@@ -79,7 +80,7 @@ def generate_contents(len,width):
     return contents
 
 def write_cir(contents):
-    with open(circuit,'w') as file :
+    with open(cir_filename,'w') as file :
         file.write(contents)
 
 def prepare_for_post_proc(width):
@@ -228,7 +229,7 @@ def main():
     for len in len_list:
         contents = generate_contents(len,width)
         write_cir(contents)
-        call(['ngspice',circuit]) 
+        call(['ngspice',cir_filename]) 
 
         sim_values = prepare_for_post_proc(width)
         
