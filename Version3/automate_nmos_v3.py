@@ -202,9 +202,11 @@ def op_search(params):
     bool_vec = (gm_wid<gm_wid_max) & (gm_wid>gm_wid_min) & (gds_wid<gds_wid_max) & (gds_wid>gds_wid_min) & \
                (gain<gain_max) & (gain>gain_min) & (ft<ft_max) & (ft>ft_min)
 
-    print("\nPossible Vgs values for the selected device param range are : ")
-    print(vgs[bool_vec])
-
+    print("\nPossible Vgs values for the selected device param range are : \n")
+    
+    # printing valid operating points and corresponding device parameters
+    for i in range(len(vgs[bool_vec])):
+        print(f"Vgs = {vgs[bool_vec][i]:.3f}\tgm/Id = {gm_by_id[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain[bool_vec][i]:.1f}\tft = {ft[bool_vec][i]:.2E}")
 
 def main():
 
