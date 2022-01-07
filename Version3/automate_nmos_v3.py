@@ -36,11 +36,11 @@ def define_constraints():
         
         if (ret == "gm_wid") :
             gm_wid_min , gm_wid_max = input("Enter gm/W range : ").split()
-            c_file.write("gm_wid "+gm_wid_min+" "+gm_wid_max+"\n")
+            c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
 
         elif (ret == "gds_wid"):
             gds_wid_min , gds_wid_max = input("Enter gds/W range : ").split()
-            c_file.write("gds_wid "+gds_wid_min+" "+gds_wid_max+"\n")
+            c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
 
         elif (ret == "gain"):
             gain_min , gain_max = input("Enter gain range : ").split()
@@ -171,7 +171,40 @@ def extract_params():
 def op_search(params):
     
     vgs,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs = params
-    print(vgs[(gm_wid <50) & (gm_wid > 30)])
+    # print(vgs[(gm_wid <50) & (gm_wid > 30)])
+
+    # initial condition values
+    gm_wid_min , gds_wid_min , gain_min , ft_min = 0,0,0,0
+    gm_wid_max , gds_wid_max , gain_max , ft_max = 1e12,1e12,1e12,1e12 
+    
+    # parse constraints.txt
+    with open(constraints_file) as c_file :
+        c_file_lines = c_file.readlines()
+    
+    for line in c_file_lines :
+        
+        name,llim,ulim = line.split()
+        llim = float(llim)
+        ulim = float(ulim)
+
+        if name == 'gm/W' :
+            gm_wid_min , gm_wid_max = llim , ulim 
+        elif name == 'gds/W' :
+            gds_wid_min , gds_wid_max = llim , ulim
+        elif name == 'gain' :
+            gain_min , gain_max = llim , ulim
+        elif name == 'ft' :
+            ft_min , ft_max = llim , ulim
+        else :
+            print("Error in constraints.txt")
+            exit()
+    
+    bool_vec = (gm_wid<gm_wid_max) & (gm_wid>gm_wid_min) & (gds_wid<gds_wid_max) & (gds_wid>gds_wid_min) & \
+               (gain<gain_max) & (gain>gain_min) & (ft<ft_max) & (ft>ft_min)
+
+    print("\nPossible Vgs values for the selected device param range are : ")
+    print(vgs[bool_vec])
+
 
 def main():
 
