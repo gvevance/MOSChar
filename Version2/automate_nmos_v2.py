@@ -13,7 +13,7 @@ cir_filename = 'temp_nmos_v2.cir'
 value_file = 'values_nmos_v2.txt'
 model_file = '130nm_bulk.pm'
 
-def generate_contents(len,width):
+def generate_contents(length,width):
     
     contents = f'''NMOS characterisation
 
@@ -25,7 +25,7 @@ def generate_contents(len,width):
     *************************************
     * Defining arameters 
     *************************************
-    .param len = {len}u
+    .param len = {length}u
     .param width = {width}u 
     .param lmin = 0.13u
 
@@ -118,13 +118,13 @@ def prepare_for_post_proc(width):
 
     return [vgs,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs]
 
-def plot_figures(sim_values,len,plot_list):
+def plot_figures(sim_values,length,plot_list):
 
     vgs,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs = sim_values
 
     if "gm/id" in plot_list:
         plt.figure(1) # gm/Id vs vgs
-        plt.plot( vgs , gm_by_id , label='Len = '+len+'u' )
+        plt.plot( vgs , gm_by_id , label='Len = '+length+'u' )
         plt.ylabel("gm/Id")
         plt.xlabel("Vgs")
         plt.title("Plot of gm/Id vs Vgs")
@@ -133,7 +133,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "id/W" in plot_list:
         plt.figure(2) # log10(id/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(id_wid) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(id_wid) , label='Len = '+length+'u' )
         plt.ylabel("log10(Id/W)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(Id/W) vs gm/Id")
@@ -142,7 +142,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "gm/W" in plot_list:
         plt.figure(3) # log10(gm/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(gm_wid) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(gm_wid) , label='Len = '+length+'u' )
         plt.ylabel("log10(gm/W)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(gm/W) vs gm/Id")
@@ -151,7 +151,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "gds/W" in plot_list:
         plt.figure(4) # log10(gds/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(gds_wid) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(gds_wid) , label='Len = '+length+'u' )
         plt.ylabel("log10(gds/W)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(gds/W) vs gm/Id")
@@ -160,7 +160,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "gain" in plot_list:
         plt.figure(5) # log10(gain/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(gain) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(gain) , label='Len = '+length+'u' )
         plt.ylabel("log10(gain)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(gain) vs gm/Id")
@@ -169,7 +169,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "cgg/W" in plot_list:
         plt.figure(6) # log10(cgg/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(cgg_wid) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(cgg_wid) , label='Len = '+length+'u' )
         plt.ylabel("log10(cgg/W)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(cgg/W) vs gm/Id")
@@ -178,7 +178,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "cgs/W" in plot_list:
         plt.figure(7) # log10(cgs/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(cgs_wid) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(cgs_wid) , label='Len = '+length+'u' )
         plt.ylabel("log10(cgs/W)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(cgs/W) vs gm/Id")
@@ -187,7 +187,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "ft" in plot_list:
         plt.figure(8) # log10(ft) vs gm/Id
-        plt.plot( gm_by_id , np.log10(ft) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(ft) , label='Len = '+length+'u' )
         plt.ylabel("log10(ft)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(ft) vs gm/Id")
@@ -196,7 +196,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "vdsat" in plot_list:
         plt.figure(9) # vdsat vs gm/Id
-        plt.plot( gm_by_id , vdsat , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , vdsat , label='Len = '+length+'u' )
         plt.ylabel("vdsat")
         plt.xlabel("gm/Id")
         plt.title("Plot of vdsat vs gm/Id")
@@ -205,7 +205,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "vth" in plot_list:
         plt.figure(10) # vth vs gm/Id
-        plt.plot( gm_by_id , vth , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , vth , label='Len = '+length+'u' )
         plt.ylabel("vth")
         plt.xlabel("gm/Id")
         plt.title("Plot of vth vs gm/Id")
@@ -214,7 +214,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "gmbs/W" in plot_list:
         plt.figure(11) # log10(gmbs/W) vs gm/Id
-        plt.plot( gm_by_id , np.log10(gmbs_wid) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(gmbs_wid) , label='Len = '+length+'u' )
         plt.ylabel("log10(gmbs/W)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(gmbs/W) vs gm/Id")
@@ -223,7 +223,7 @@ def plot_figures(sim_values,len,plot_list):
 
     if "gm/gmbs" in plot_list:
         plt.figure(12) # log10(gm/gmbs) vs gm/Id
-        plt.plot( gm_by_id , np.log10(gm_by_gmbs) , label='Len = '+len+'u' )
+        plt.plot( gm_by_id , np.log10(gm_by_gmbs) , label='Len = '+length+'u' )
         plt.ylabel("log10(gm/gmbs)")
         plt.xlabel("gm/Id")
         plt.title("Plot of log10(gm/gmbs) vs gm/Id")
@@ -238,17 +238,21 @@ def main():
     len_list = str(input("Enter lengths (in um) (space-separated) : ")).split()
     
     print("\nCodes : gm/id, vdsat, gm/W, gds/W, id/W, cgs/W, cgg/W, vth, gain, ft, gmbs/W, gm/gmbs \n")
-    plot_list = input("Enter quantities you want to plot using appropriate codes :").split()
+    plot_superlist = ["gm/id", "vdsat", "gm/W", "gds/W", "id/W", "cgs/W", "cgg/W", "vth", "gain", "ft", "gmbs/W", "gm/gmbs"]
+    plot_list = input("Enter quantities you want to plot using appropriate codes : ").split()
+
+    while ((set(plot_list).issubset(set(plot_superlist)) == False ) or (len(plot_list) == 0)):
+        plot_list = input("Incorrect code entered. Please re-enter : ").split()
     print()
 
-    for len in len_list:
-        contents = generate_contents(len,width)
+    for length in len_list:
+        contents = generate_contents(length,width)
         write_cir(contents)
         call(['ngspice',cir_filename]) 
 
         sim_values = prepare_for_post_proc(width)
 
-        plot_figures(sim_values,len,plot_list)
+        plot_figures(sim_values,length,plot_list)
         
     plt.show()
 
