@@ -175,7 +175,7 @@ def op_search(params):
 
     # initial condition values
     gm_wid_min , gds_wid_min , gain_min , ft_min = 0,0,0,0
-    gm_wid_max , gds_wid_max , gain_max , ft_max = 1e12,1e12,1e12,1e12 
+    gm_wid_max , gds_wid_max , gain_max , ft_max = 1e16,1e16,1e16,1e16 
     
     # parse constraints.txt
     with open(constraints_file) as c_file :
@@ -207,9 +207,10 @@ def op_search(params):
         
         # printing valid operating points and corresponding device parameters
         for i in range(len(vgs[bool_vec])):
-            print(f"Vgs = {vgs[bool_vec][i]:.3f}\tgm/Id = {gm_by_id[bool_vec][i]:.2f}\tid/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain[bool_vec][i]:.1f}\tft = {ft[bool_vec][i]:.2E}")
+            print(f"Vgs = {vgs[bool_vec][i]:.3f}\tvdsat = {vdsat[bool_vec][i]:.2f}\tgm/Id = {gm_by_id[bool_vec][i]:.2f}\t\
+id/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain[bool_vec][i]:.1f}\tft = {ft[bool_vec][i]:.2E}")
         print()  # prints newline
-        
+
     else :
         print("\nNo valid operating point found. Try another length or voltage range.\n")
 
