@@ -239,6 +239,7 @@ def main():
     
     print("\nCodes : gm/id, vdsat, gm/W, gds/W, id/W, cgs/W, cgg/W, vth, gain, ft, gmbs/W, gm/gmbs \n")
     plot_list = input("Enter quantities you want to plot using appropriate codes :").split()
+    print()
 
     for len in len_list:
         contents = generate_contents(len,width)
