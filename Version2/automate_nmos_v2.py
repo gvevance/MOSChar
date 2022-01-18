@@ -235,7 +235,7 @@ def main():
     print("\nAutomated gm/id curve extracting ...")
     print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
     
-    print("1 - Default mode(view trends)\n2 - Custom mode\n")
+    print("1 - Default mode (view trends)\n2 - Custom mode\n")
     mode = int(input("Enter mode : "))
 
     if mode == 1 :
@@ -243,7 +243,7 @@ def main():
         len_list = ['0.3']
 
     elif mode == 2 :
-        width = str(input("Enter width (in um) : "))
+        width = str(input("\nEnter width (in um) : "))
         len_list = str(input("Enter lengths (in um) (space-separated) : ")).split()
     
     else :
