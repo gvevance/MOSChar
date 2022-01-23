@@ -5,7 +5,6 @@
 
 from subprocess import call
 import numpy as np
-import matplotlib.pyplot as plt
 
 vmin_tolerance = 0.05  #! cannot give voltage as 0. So min tolerance
 
