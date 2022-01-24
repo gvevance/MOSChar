@@ -23,9 +23,8 @@ def define_constraints():
     print("\nWhat parameters do you have constraints on ? Enter appropriate code (\"0\" when done)...\n")
     print("\"gm_wid\" - gm/W \n\"gds_wid\" - gds/W \n\"gain\" - gm/gds \n\"ft\" - ft \n")
     
-    # clear already existing lines in constraints.txt
-    c_file = open(constraints_file,"r+")
-    c_file.truncate(0)
+    # clear already existing lines in constraints.txt (create it if it doesn' exist)
+    c_file = open(constraints_file,'w+')
     c_file.close()
 
     c_file = open(constraints_file,'a') 
