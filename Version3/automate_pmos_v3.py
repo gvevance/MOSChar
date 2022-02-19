@@ -64,7 +64,7 @@ def generate_contents(len,vsg_min,vsg_max):
     if vsg_min == '0' :
         vsg_min = str(vmin_tolerance)
     
-    contents = f'''pMOS characterisation
+    contents = f'''PMOS characterisation
 
 *************************************
 * Include model file 
@@ -127,9 +127,11 @@ exit
 
     return contents
 
+
 def write_cir(contents):
     with open(cir_filename,'w') as file :
         file.write(contents)
+
 
 def extract_params():
     
@@ -138,37 +140,53 @@ def extract_params():
     with open(value_file) as txtfile :
         temp = np.genfromtxt(txtfile, dtype=float)
 
-    vsg    = temp[1:,0]
-    id     = temp[1:,1]
-    vdsat  = temp[1:,2]
-    cgs    = -temp[1:,3]
-    cgg    = temp[1:,4]
-    gm     = temp[1:,5]
-    gds    = temp[1:,6]
-    gmbs   = temp[1:,7]
-    vth    = temp[1:,8]
+    params = {}
+
+    params["vsg"]    = temp[1:,0]
+    params["id"]     = temp[1:,1]
+    params["vdsat"]  = temp[1:,2]
+    params["cgs"]    = -temp[1:,3]
+    params["cgg"]    = temp[1:,4]
+    params["gm"]     = temp[1:,5]
+    params["gds"]    = temp[1:,6]
+    params["gmbs"]   = temp[1:,7]
+    params["vth"]    = temp[1:,8]
 
     # custom definitions
 
-    gm_by_id   = gm/id 
-    gain       = gm/gds
-    ft         = gm/cgg
-    gm_by_gmbs = gm/gmbs
+    params["gm_by_id"]   = params["gm"]/params["id"] 
+    params["gain"]       = params["gm"]/params["gds"]
+    params["ft"]         = params["gm"]/params["cgg"]
+    params["gm_by_gmbs"] = params["gm"]/params["gmbs"]
 
     # /width quantities
 
-    id_wid     = id/width_c
-    gm_wid     = gm/width_c
-    gds_wid    = gds/width_c
-    cgg_wid    = cgg/width_c
-    cgs_wid    = cgs/width_c
-    gmbs_wid   = gmbs/width_c
+    params["id_wid"]     = params["id"]/width_c
+    params["gm_wid"]     = params["gm"]/width_c
+    params["gds_wid"]    = params["gds"]/width_c
+    params["cgg_wid"]    = params["cgg"]/width_c
+    params["cgs_wid"]    = params["cgs"]/width_c
+    params["gmbs_wid"]   = params["gmbs"]/width_c
 
-    return [vsg,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs]
+    return params
+
 
 def op_search(params):
     
-    vsg,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs = params
+    vsg = params["vsg"]
+    gm_by_id = params["gm_by_id"]
+    id_wid = params["id_wid"]
+    vdsat = params["vdsat"]
+    cgs_wid = params["cgs_wid"]
+    cgg_wid = params["cgg_wid"]
+    gm_wid = params["gm_wid"]
+    gds_wid = params["gds_wid"]
+    vth = params["vth"]
+    gain = params["gain"]
+    ft = params["ft"]
+    gmbs_wid = params["gmbs_wid"]
+    gm_by_gmbs = params["gm_by_gmbs"]
+    
     # print(vsg[(gm_wid <50) & (gm_wid > 30)])
 
     # initial condition values
@@ -201,7 +219,7 @@ def op_search(params):
                (gain<gain_max) & (gain>gain_min) & (ft<ft_max) & (ft>ft_min)
 
     if len(vsg[bool_vec] != 0):
-        print("\nPossible Vgs values for the selected device param range are : \n")
+        print("\nPossible Vsg values for the selected device param range are : \n")
         
         # printing valid operating points and corresponding device parameters
         for i in range(len(vsg[bool_vec])):

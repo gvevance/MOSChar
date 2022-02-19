@@ -1,4 +1,4 @@
-NMOS characterisation
+PMOS characterisation
 
 *************************************
 * Include model file 
@@ -8,15 +8,15 @@ NMOS characterisation
 *************************************
 * Defining arameters 
 *************************************
-.param len = 0.2u
+.param len = 0.4u
 .param width = 100u 
 .param lmin = 0.13u
 
 *************************************
 * Circuit definition
 *************************************
-vgs 1 0 dc 0.5
-M1 1 1 0 0 nmos l={len} w={width} as={2*lmin*width} ad={2*lmin*width} ps={4*lmin+2*width} pd={4*lmin+2*width}
+vsg 1 0 dc 0.5
+M1 0 0 1 1 pmos l={len} w={width} as={2*lmin*width} ad={2*lmin*width} ps={4*lmin+2*width} pd={4*lmin+2*width}
 
 *************************************
 * Control section
@@ -28,7 +28,7 @@ save @M1[id], @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg],
 + @M1[gm], @M1[gds], @M1[gmbs], @M1[vsat]
 
 * DC sweep
-dc vgs 0.05 0.6 0.01
+dc vsg 0.05 0.5 0.01
 
 * Run the sim
 run
@@ -37,7 +37,7 @@ set filetype=ascii
 set wr_singlescale
 set wr_vecnames
 
-wrdata values_nmos_v3.txt @M1[id], @M1[vdsat], @M1[cgs], @M1[cgg] 
+wrdata values_pmos_v3.txt @M1[id], @M1[vdsat], @M1[cgs], @M1[cgg] 
 + @M1[gm], @M1[gds], @M1[gmbs], @M1[vth]
 
 * Plot commands
