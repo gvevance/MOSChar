@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from subprocess import call
 
-cir_filename = "temp_nmos.cir"
-value_file = "values_nmos.txt"
+cir_filename = "temp_pmos.cir"
+value_file = "values_pmos.txt"
 model_file = "130nm_bulk.pm"
 
 contents = f'''PMOS characterisation
