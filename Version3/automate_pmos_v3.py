@@ -8,10 +8,10 @@ import numpy as np
 
 vmin_tolerance = 0.05  #! cannot give voltage as 0. So min tolerance
 
-cir_filename = 'temp_nmos_v3.cir'
-value_file = 'values_nmos_v3.txt'
+cir_filename = 'temp_pmos_v3.cir'
+value_file = 'values_pmos_v3.txt'
 model_file = '130nm_bulk.pm'
-constraints_file = 'constraints_nmos.txt'
+constraints_file = "constraints_pmos.txt"
 
 width = '100' # in um
 
@@ -59,12 +59,12 @@ def define_constraints():
     # printing chosen constraints
     
     
-def generate_contents(len,vgs_min,vgs_max):
+def generate_contents(len,vsg_min,vsg_max):
     
-    if vgs_min == '0' :
-        vgs_min = str(vmin_tolerance)
+    if vsg_min == '0' :
+        vsg_min = str(vmin_tolerance)
     
-    contents = f'''NMOS characterisation
+    contents = f'''pMOS characterisation
 
 *************************************
 * Include model file 
@@ -81,8 +81,8 @@ def generate_contents(len,vgs_min,vgs_max):
 *************************************
 * Circuit definition
 *************************************
-vgs 1 0 dc 0.5
-M1 1 1 0 0 nmos l={{len}} w={{width}} as={{2*lmin*width}} ad={{2*lmin*width}} ps={{4*lmin+2*width}} pd={{4*lmin+2*width}}
+vsg 1 0 dc 0.5
+M1 0 0 1 1 pmos l={{len}} w={{width}} as={{2*lmin*width}} ad={{2*lmin*width}} ps={{4*lmin+2*width}} pd={{4*lmin+2*width}}
 
 *************************************
 * Control section
@@ -94,7 +94,7 @@ save @M1[id], @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg],
 + @M1[gm], @M1[gds], @M1[gmbs], @M1[vsat]
 
 * DC sweep
-dc vgs {vgs_min} {vgs_max} 0.01
+dc vsg {vsg_min} {vsg_max} 0.01
 
 * Run the sim
 run
@@ -138,7 +138,7 @@ def extract_params():
     with open(value_file) as txtfile :
         temp = np.genfromtxt(txtfile, dtype=float)
 
-    vgs    = temp[1:,0]
+    vsg    = temp[1:,0]
     id     = temp[1:,1]
     vdsat  = temp[1:,2]
     cgs    = -temp[1:,3]
@@ -164,12 +164,12 @@ def extract_params():
     cgs_wid    = cgs/width_c
     gmbs_wid   = gmbs/width_c
 
-    return [vgs,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs]
+    return [vsg,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs]
 
 def op_search(params):
     
-    vgs,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs = params
-    # print(vgs[(gm_wid <50) & (gm_wid > 30)])
+    vsg,gm_by_id,id_wid,vdsat,cgs_wid,cgg_wid,gm_wid,gds_wid,vth,gain,ft,gmbs_wid,gm_by_gmbs = params
+    # print(vsg[(gm_wid <50) & (gm_wid > 30)])
 
     # initial condition values
     gm_wid_min , gds_wid_min , gain_min , ft_min = 0,0,0,0
@@ -200,12 +200,12 @@ def op_search(params):
     bool_vec = (gm_wid<gm_wid_max) & (gm_wid>gm_wid_min) & (gds_wid<gds_wid_max) & (gds_wid>gds_wid_min) & \
                (gain<gain_max) & (gain>gain_min) & (ft<ft_max) & (ft>ft_min)
 
-    if len(vgs[bool_vec] != 0):
+    if len(vsg[bool_vec] != 0):
         print("\nPossible Vgs values for the selected device param range are : \n")
         
         # printing valid operating points and corresponding device parameters
-        for i in range(len(vgs[bool_vec])):
-            print(f"Vgs = {vgs[bool_vec][i]:.3f}\tvdsat = {vdsat[bool_vec][i]:.2f}\tgm/Id = {gm_by_id[bool_vec][i]:.2f}\t\
+        for i in range(len(vsg[bool_vec])):
+            print(f"Vgs = {vsg[bool_vec][i]:.3f}\tvdsat = {vdsat[bool_vec][i]:.2f}\tgm/Id = {gm_by_id[bool_vec][i]:.2f}\t\
 id/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain[bool_vec][i]:.1f}\tft = {ft[bool_vec][i]:.2E}")
         print()  # prints newline
 
@@ -216,11 +216,11 @@ id/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain
 def main():
 
     print("\nSearch for the right bias point for transistors.\n")
-    vgs_min , vgs_max = str(input("Enter VGS range (in volts) : ")).split()
+    vsg_min , vsg_max = str(input("Enter VSG range (in volts) : ")).split()
     len = str(input("Enter length ( in um ) : "))
 
     define_constraints()  # does not need any input or output. Writes to a file.
-    contents = generate_contents(len,vgs_min,vgs_max)
+    contents = generate_contents(len,vsg_min,vsg_max)
     write_cir(contents)
     call(['ngspice',cir_filename])
 
