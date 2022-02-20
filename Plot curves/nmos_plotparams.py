@@ -4,14 +4,15 @@
 # Run the code in a for loop and get back the numpy arrays for post-processing
 
 from subprocess import call
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
 # define constants
  
-cir_filename = 'temp_nmos_v2.cir'
-value_file = 'values_nmos_v2.txt'
-model_file = '130nm_bulk.pm'
+cir_filename = os.path.join(os.getcwd(),'tmp/temp_nmos_v2.cir')
+value_file = os.path.join(os.getcwd(),'tmp/values_nmos_v2.txt')
+model_file = os.path.join(os.getcwd(),'Model_files/130nm_bulk.pm')
 
 def generate_contents(length,width):
     

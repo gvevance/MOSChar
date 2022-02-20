@@ -4,14 +4,15 @@
 # Run the code in a for loop and get back the numpy arrays for post-processing
 
 from subprocess import call
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
 # define constants
  
-cir_filename = 'temp_nmos_v2_b.cir'
-value_file = 'values_nmos_v2_b.txt'
-model_file = '130nm_bulk.pm'
+cir_filename = os.path.join(os.getcwd(),'tmp/temp_nmos_v2_b.cir')
+value_file = os.path.join(os.getcwd(),'tmp/values_nmos_v2_b.txt')
+model_file = os.path.join(os.getcwd(),'Model_files/130nm_bulk.pm')
 
 def generate_contents(length,wmin,wmax,i0,vds):
     
@@ -264,7 +265,7 @@ def main():
     print("\nAutomated gm/id curve extracting ...")
     print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
     
-    print("1 - Default mode (view trends)\n2 - Custom mode\n")
+    print("1 - Default mode (view trends) \n2 - Custom mode\n")
     mode = int(input("Enter mode : "))
 
     if mode == 1 :
@@ -288,8 +289,8 @@ def main():
         print("Error. Incorrect mode entered. Exiting ...")
         exit()
 
-    print("\nCodes : gm/id, vdsat, gm, gds, cgs, cgg, vth, gain, ft, gmbs, gm/gmbs \n")
-    plot_superlist = ["gm/id", "vdsat", "gm", "gds", "cgs", "cgg", "vth", "gain", "ft", "gmbs", "gm/gmbs"]
+    print("\nCodes : gm/id, vdsat, gm, gds, cgs, cgg, vth, gain, ft, gmbs, gm/gmbs, vgs \n")
+    plot_superlist = ["gm/id", "vdsat", "gm", "gds", "cgs", "cgg", "vth", "gain", "ft", "gmbs", "gm/gmbs", "vgs"]
     plot_list = input("Enter quantities you want to plot using appropriate codes : ").split()
 
     while ((set(plot_list).issubset(set(plot_superlist)) == False ) or (len(plot_list) == 0)):
