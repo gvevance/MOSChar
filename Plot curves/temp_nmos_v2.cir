@@ -8,8 +8,8 @@ NMOS characterisation
 *************************************
 * Defining arameters 
 *************************************
-.param len = 0.13u
-.param width = 1u 
+.param len = 0.3u
+.param width = 100u 
 .param lmin = 0.13u
 
 *************************************
