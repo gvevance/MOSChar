@@ -25,7 +25,7 @@ def generate_contents(length,wmin,wmax,i0,vds):
 *************************************
 * Defining arameters 
 *************************************
-.param len = {length}
+.param len = {length}u
 .param width = 100u 
 .param lmin = 0.13u
 
@@ -280,7 +280,7 @@ def main():
 
     elif mode == 2 :
         i0 = str(input("\nEnter current (in uA) : "))
-        vds = str(input("\nEnter VDS (in V) : "))
+        vds = str(input("Enter VDS (in V) : "))
         wmin,wmax = str(input("Enter width range (in um) : ")).split()
         len_list = str(input("Enter lengths (in um) (space-separated) : ")).split()
     
