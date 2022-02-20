@@ -8,7 +8,7 @@ NMOS characterisation
 *************************************
 * Defining arameters 
 *************************************
-.param len = 0.3u
+.param len = 0.26
 .param width = 100u 
 .param lmin = 0.13u
 
@@ -16,7 +16,7 @@ NMOS characterisation
 * Circuit definition
 *************************************
 vdd 1 0 dc 1.3
-i0 2 1 dc 100
+i0 1 2 dc 100u
 vds_ref 4 0 dc 0.2
 e_amp 3 0 2 4 1e4
 M1 2 3 0 0 nmos l={len} w={width} as={2*lmin*width} ad={2*lmin*width} ps={4*lmin+2*width} pd={4*lmin+2*width}
@@ -28,46 +28,48 @@ M1 2 3 0 0 nmos l={len} w={width} as={2*lmin*width} ad={2*lmin*width} ps={4*lmin
 
 .control 
 
-save @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg],
-+ @M1[gm], @M1[gds], @M1[gmbs], @M1[vsat]
-
 * parameter sweep of width
 
 let wmin = 10u
-let wmax = 100u
+let wmax = 130u
 let delta_w = 5u
 let w = wmin
 
 set filetype=ascii
-set wr_singlescale
-*set wr_vecnames
+
+save @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg],
++ @M1[gm], @M1[gds], @M1[gmbs], @M1[vsat]
+
+echo "@M1[w] @M1[vgs] @M1[gm] @M1[gds] @M1[vdsat] @M1[vth] @M1[cgs] @M1[cgg] @M1[gmbs]" > values_nmos_v2_b.txt
 
 * loop
 while w le wmax
-    alter width w
+    
+    * alter changes device value or device property ( not variables )
+    alter @m1[w] = w
+    
+    * specify type of analysis
     op
-    wrdata values_nmos_v2_b.txt w, @M1[vdsat], @M1[cgs], @M1[cgg] 
-    + @M1[gm], @M1[gds], @M1[gmbs], @M1[vth], @M1[vgs]
-    set appendwrite
+    
+    let gm = @M1[gm]
+    let gds = @M1[gds]
+    let vdsat = @M1[vdsat]
+    let vgs = @M1[vgs]
+    let vth = @M1[vth]
+    let cgs = @M1[cgs]
+    let cgg = @M1[cgg]
+    let gmbs = @M1[gmbs]
+
+    * run the sim
+    run
+
+    * append (>>) to file 
+    echo "$&w" "$&vgs" "$&gm" "$&gds" "$&vdsat" "$&vth" "$&cgs" "$&cgg" "$&gmbs">> values_nmos_v2_b.txt
+    
+    * update variable w
     let w = w + delta_w
+
 end
-
-* Run the sim
-run
-
-*wrdata values_nmos_v2_b.txt @M1[vdsat], @M1[cgs], @M1[cgg] 
-*+ @M1[gm], @M1[gds], @M1[gmbs], @M1[vth], @M1[vgs]
-
-* Plot commands
-* plot @M1[id]
-* plot @M1[gm]
-* plot @M1[gmbs]
-* plot @M1[gds]
-* plot @M1[cgs]
-* plot @M1[cgg]
-* plot @M1[vdsat]
-* plot @M1[vsat]
-
 
 exit
 .endc

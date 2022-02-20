@@ -1,0 +1,15 @@
+* C:\users\gabriel\My Documents\LTspiceXVII\MOSChar\test.asc
+M1 2 3 0 0 nmos l=0.3u w={w}
+I1 1 2 100µ
+V1 1 0 1.3
+E1 3 0 2 4 1e4
+V2 4 0 0.2
+.model NMOS NMOS
+.model PMOS PMOS
+.lib C:\users\gabriel\My Documents\LTspiceXVII\lib\cmp\standard.mos
+.op
+.include 130nm_bulk.pm
+.param w 100u
+.step param w 1u 300u 2u
+.backanno
+.end

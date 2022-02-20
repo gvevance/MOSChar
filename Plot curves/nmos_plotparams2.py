@@ -20,20 +20,20 @@ def generate_contents(length,wmin,wmax,i0,vds):
 *************************************
 * Include model file 
 *************************************
-.include {model_file}
+.include 130nm_bulk.pm
 
 *************************************
 * Defining arameters 
 *************************************
-.param len = {length}u
-.param width = {wmax}u 
+.param len = {length}
+.param width = 100u 
 .param lmin = 0.13u
 
 *************************************
 * Circuit definition
 *************************************
 vdd 1 0 dc 1.3
-i0 2 1 dc {i0}
+i0 1 2 dc {i0}u
 vds_ref 4 0 dc {vds}
 e_amp 3 0 2 4 1e4
 M1 2 3 0 0 nmos l={{len}} w={{width}} as={{2*lmin*width}} ad={{2*lmin*width}} ps={{4*lmin+2*width}} pd={{4*lmin+2*width}}
@@ -45,9 +45,6 @@ M1 2 3 0 0 nmos l={{len}} w={{width}} as={{2*lmin*width}} ad={{2*lmin*width}} ps
 
 .control 
 
-save @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg],
-+ @M1[gm], @M1[gds], @M1[gmbs], @M1[vsat]
-
 * parameter sweep of width
 
 let wmin = {wmin}u
@@ -56,35 +53,40 @@ let delta_w = 5u
 let w = wmin
 
 set filetype=ascii
-set wr_singlescale
-*set wr_vecnames
+
+save @M1[vdsat], @M1[vth], @M1[cgs], @M1[cgg],
++ @M1[gm], @M1[gds], @M1[gmbs], @M1[vsat]
+
+echo "@M1[w] @M1[vgs] @M1[gm] @M1[gds] @M1[vdsat] @M1[vth] @M1[cgs] @M1[cgg] @M1[gmbs]" > {value_file}
 
 * loop
 while w le wmax
-    alter width w
+    
+    * alter changes device value or device property ( not variables )
+    alter @m1[w] = w
+    
+    * specify type of analysis
     op
-    wrdata {value_file} w, @M1[vdsat], @M1[cgs], @M1[cgg] 
-    + @M1[gm], @M1[gds], @M1[gmbs], @M1[vth], @M1[vgs]
-    set appendwrite
+    
+    let gm = @M1[gm]
+    let gds = @M1[gds]
+    let vdsat = @M1[vdsat]
+    let vgs = @M1[vgs]
+    let vth = @M1[vth]
+    let cgs = @M1[cgs]
+    let cgg = @M1[cgg]
+    let gmbs = @M1[gmbs]
+
+    * run the sim
+    run
+
+    * append (>>) to file 
+    echo "$&w" "$&vgs" "$&gm" "$&gds" "$&vdsat" "$&vth" "$&cgs" "$&cgg" "$&gmbs">> {value_file}
+    
+    * update variable w
     let w = w + delta_w
+
 end
-
-* Run the sim
-run
-
-*wrdata {value_file} @M1[vdsat], @M1[cgs], @M1[cgg] 
-*+ @M1[gm], @M1[gds], @M1[gmbs], @M1[vth], @M1[vgs]
-
-* Plot commands
-* plot @M1[id]
-* plot @M1[gm]
-* plot @M1[gmbs]
-* plot @M1[gds]
-* plot @M1[cgs]
-* plot @M1[cgg]
-* plot @M1[vdsat]
-* plot @M1[vsat]
-
 
 exit
 .endc
@@ -108,18 +110,19 @@ def prepare_for_post_proc(i0):
     with open(value_file) as txtfile :
         temp = np.genfromtxt(txtfile, dtype=float)
 
+    # print(temp)
     params = {}
 
-    params["width"]    = temp[1:,0]
-    params["vdsat"]    = temp[1:,1]
-    params["cgs"]      = -temp[1:,2]
-    params["cgg"]      = temp[1:,3]
-    params["gm"]       = temp[1:,4]
-    params["gds"]      = temp[1:,5]
-    params["gmbs"]     = temp[1:,6]
-    params["vth"]      = temp[1:,7]
-    params["vgs"]      = temp[1:,8] 
-    params["id"]       = float(i0)*1e-6
+    params["width"]     = temp[1:,0]
+    params["vgs"]       = temp[1:,1]
+    params["gm"]        = temp[1:,2]
+    params["gds"]       = temp[1:,3]
+    params["vdsat"]     = temp[1:,4]
+    params["vth"]       = temp[1:,5]
+    params["cgs"]       = -temp[1:,6]
+    params["cgg"]       = temp[1:,7]
+    params["gmbs"]      = temp[1:,8] 
+    params["id"]        = float(i0)*1e-6
     
     # custom definitions
 
@@ -148,7 +151,7 @@ def plot_figures(params,length,plot_list):
     gm_by_gmbs = params["gm_by_gmbs"]
 
     if "vgs" in plot_list:
-        plt.figure(1) # gm/Id vs width
+        plt.figure(1) # vgs vs width
         plt.plot( width , vgs , label='Len = '+length+'u' )
         plt.ylabel("vgs")
         plt.xlabel("width")
@@ -157,7 +160,7 @@ def plot_figures(params,length,plot_list):
         plt.legend()
 
     if "gm/id" in plot_list:
-        plt.figure(1) # gm/Id vs width
+        plt.figure(2) # gm/Id vs width
         plt.plot( width , gm_by_id , label='Len = '+length+'u' )
         plt.ylabel("gm/Id")
         plt.xlabel("width")
@@ -166,8 +169,8 @@ def plot_figures(params,length,plot_list):
         plt.legend()
 
     if "gm" in plot_list:
-        plt.figure(3) # log10(gm/W) vs gm/Id
-        plt.semilogy( width , gm , label='Len = '+length+'u' )
+        plt.figure(3) # (gm) vs width
+        plt.plot( width , gm , label='Len = '+length+'u' )
         plt.ylabel("gm")
         plt.xlabel("width")
         plt.title("Plot of gm vs width")
@@ -175,8 +178,8 @@ def plot_figures(params,length,plot_list):
         plt.legend()
 
     if "gds" in plot_list:
-        plt.figure(4) # log10(gds) vs width
-        plt.semilogy( width , gds , label='Len = '+length+'u' )
+        plt.figure(4) # (gds) vs width
+        plt.plot( width , gds , label='Len = '+length+'u' )
         plt.ylabel("gds")
         plt.xlabel("width")
         plt.title("Plot of gds vs width")
@@ -184,8 +187,8 @@ def plot_figures(params,length,plot_list):
         plt.legend()
 
     if "gain" in plot_list:
-        plt.figure(5) # log10(gain) vs width
-        plt.semilogy( width , gain , label='Len = '+length+'u' )
+        plt.figure(5) # (gain) vs width
+        plt.plot( width , gain , label='Len = '+length+'u' )
         plt.ylabel("gain")
         plt.xlabel("width")
         plt.title("Plot of gain vs width")
@@ -194,7 +197,7 @@ def plot_figures(params,length,plot_list):
 
     if "cgg/w" in plot_list:
         plt.figure(6) # log10(cgg) vs width
-        plt.semilogy( width, cgg , label='Len = '+length+'u' )
+        plt.plot( width, cgg , label='Len = '+length+'u' )
         plt.ylabel("cgg")
         plt.xlabel("width")
         plt.title("Plot of cgg vs width")
@@ -203,7 +206,7 @@ def plot_figures(params,length,plot_list):
 
     if "cgs/w" in plot_list:
         plt.figure(7) # log10(cgs) vs width
-        plt.semilogy( width , cgs , label='Len = '+length+'u' )
+        plt.plot( width , cgs , label='Len = '+length+'u' )
         plt.ylabel("cgs")
         plt.xlabel("width")
         plt.title("Plot of cgs vs width")
@@ -212,7 +215,7 @@ def plot_figures(params,length,plot_list):
 
     if "ft" in plot_list:
         plt.figure(8) # log10(ft) vs width
-        plt.semilogy( width , ft , label='Len = '+length+'u' )
+        plt.plot( width , ft , label='Len = '+length+'u' )
         plt.ylabel("ft")
         plt.xlabel("width")
         plt.title("Plot of ft vs width")
@@ -239,7 +242,7 @@ def plot_figures(params,length,plot_list):
 
     if "gmbs/w" in plot_list:
         plt.figure(11) # log10(gmbs/W) vs width
-        plt.semilogy( width , gmbs , label='Len = '+length+'u' )
+        plt.plot( width , gmbs , label='Len = '+length+'u' )
         plt.ylabel("gmbs/W")
         plt.xlabel("width")
         plt.title("Plot of gmbs vs width")
