@@ -4,14 +4,15 @@
 # efficient DSA search algorithm and some efficient file handling.
 
 from subprocess import call
+import os
 import numpy as np
 
 vmin_tolerance = 0.05  #! cannot give voltage as 0. So min tolerance
 
-cir_filename = 'temp_pmos_v3.cir'
-value_file = 'values_pmos_v3.txt'
-model_file = '130nm_bulk.pm'
-constraints_file = "constraints_pmos.txt"
+cir_filename = os.path.join(os.getcwd(),'tmp/temp_pmos_v3.cir')
+value_file = os.path.join(os.getcwd(),'tmp/values_pmos_v3.txt')
+model_file = os.path.join(os.getcwd(),'Model_files/130nm_bulk.pm')
+constraints_file = os.path.join(os.getcwd(),"tmp/constraints_pmos.txt")
 
 width = '100' # in um
 
