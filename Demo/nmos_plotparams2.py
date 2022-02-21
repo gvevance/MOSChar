@@ -21,7 +21,7 @@ def generate_contents(length,wmin,wmax,i0,vds):
 *************************************
 * Include model file 
 *************************************
-.include 130nm_bulk.pm
+.include {model_file}
 
 *************************************
 * Defining arameters 
@@ -262,7 +262,7 @@ def plot_figures(params,length,plot_list):
 
 def nmos_plot_demo_2():
     
-    print("\nAutomated gm/id curve extracting ...")
+    print("\n****** Fixed Id NMOS width sweep ****** \n")
     print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
     
     print("1 - Default mode (view trends) \n2 - Custom mode\n")
@@ -275,7 +275,7 @@ def nmos_plot_demo_2():
         vds = 0.2
         len_list = ['0.3']
 
-        print(f"\nwmin = {wmin}u \nwmax = {wmax}u \nlength = {len_list[0]}")
+        print(f"\nwmin = {wmin}u \nwmax = {wmax}u \nlength = {len_list[0]}u")
         print(f"i0 = {i0}uA \nvds = {vds}V \n")
 
 
