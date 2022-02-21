@@ -102,7 +102,11 @@ exit
 
 
 def write_cir(contents):
-    with open(cir_filename,'w') as file :
+    
+    if not os.path.exists(os.path.join(os.getcwd(),"tmp/")) :
+        os.mkdir(os.path.join(os.getcwd(),"tmp/"))
+        
+    with open(cir_filename,'w+') as file :
         file.write(contents)
 
 
