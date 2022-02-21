@@ -2,7 +2,7 @@
 main.py
 Program starts from here.  '''
 
-from demo import start_demo
+from Demo.start_demo import start_demo
 
 def main():
     print("\n****** MOSChar project ******\n")

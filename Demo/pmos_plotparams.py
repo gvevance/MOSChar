@@ -231,7 +231,7 @@ def plot_figures(sim_values,length,plot_list):
         plt.grid(True)
         plt.legend()
 
-def main():
+def pmos_plot_demo_1():
     
     print("\nAutomated gm/id curve extracting ...")
     print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
@@ -269,6 +269,3 @@ def main():
         plot_figures(sim_values,length,plot_list)
         
     plt.show()
-
-if __name__=="__main__":
-    main()

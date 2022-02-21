@@ -248,9 +248,9 @@ def plot_figures(params,length,plot_list):
         plt.grid(True)
         plt.legend()
 
-def main():
+def nmos_plot_demo_1():
     
-    print("\nAutomated gm/id curve extracting ...")
+    print("\n****** Diode connected NMOS ******\n")
     print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
     
     print("1 - Default mode (view trends)\n2 - Custom mode\n")
@@ -288,6 +288,3 @@ def main():
         plot_figures(params,length,plot_list)
         
     plt.show()
-
-if __name__=="__main__":
-    main()

@@ -232,7 +232,7 @@ id/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain
         print("\nNo valid operating point found. Try another length or voltage range.\n")
 
 
-def main():
+def pmos_opsearch_demo_1():
 
     print("\nSearch for the right bias point for transistors.\n")
     vsg_min , vsg_max = str(input("Enter VSG range (in volts) : ")).split()
@@ -244,8 +244,4 @@ def main():
     call(['ngspice',cir_filename])
 
     params = extract_params()
-    op_search(params)  # does not need any input. Uses the sim results and constraits file 
-
-
-if __name__=="__main__":
-    main()
+    op_search(params)  # does not need any input. Uses the sim results and constraints file 
