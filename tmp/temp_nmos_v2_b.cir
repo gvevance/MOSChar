@@ -8,7 +8,7 @@ NMOS characterisation
 *************************************
 * Defining arameters 
 *************************************
-.param len = 0.3u
+.param len = 1.04u
 .param width = 100u 
 .param lmin = 0.13u
 
@@ -30,8 +30,8 @@ M1 2 3 0 0 nmos l={len} w={width} as={2*lmin*width} ad={2*lmin*width} ps={4*lmin
 
 * parameter sweep of width
 
-let wmin = 10u
-let wmax = 100u
+let wmin = 30u
+let wmax = 700u
 let delta_w = 5u
 let w = wmin
 
