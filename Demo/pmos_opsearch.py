@@ -239,9 +239,17 @@ id/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain
 
 def pmos_opsearch_demo_1():
 
-    print("\nSearch for the right bias point for transistors.\n")
+    print("\n****** Diode connected PMOS op point search ******\n")
     vsg_min , vsg_max = str(input("Enter VSG range (in volts) : ")).split()
     len = str(input("Enter length ( in um ) : "))
+
+    try :
+        if len < 0.13 :
+            print("Length should be less than Lmin = 0.13u")
+
+    except :
+        print("Error in entered length. Aborting ... ")
+        exit()
 
     define_constraints()  # does not need any input or output. Writes to a file.
     contents = generate_contents(len,vsg_min,vsg_max)

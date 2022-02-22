@@ -294,7 +294,7 @@ def nmos_plot_demo_2():
         print("Error. Incorrect mode entered. Exiting ...")
         exit()
 
-    print("\nCodes : gm/id, vdsat, gm, gds, cgs, cgg, vth, gain, ft, gmbs, gm/gmbs, vgs \n")
+    print("\nEnter ( space-separated ) : gm/id, vdsat, gm, gds, cgs, cgg, vth, gain, ft, gmbs, gm/gmbs, vgs \n")
     plot_superlist = ["gm/id", "vdsat", "gm", "gds", "cgs", "cgg", "vth", "gain", "ft", "gmbs", "gm/gmbs", "vgs"]
     plot_list = input("Enter quantities you want to plot using appropriate codes : ").split()
 

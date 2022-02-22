@@ -238,7 +238,7 @@ def plot_figures(sim_values,length,plot_list):
 
 def pmos_plot_demo_1():
     
-    print("\nAutomated gm/id curve extracting ...")
+    print("\n****** Diode connected PMOS gm/Id curves ******\n")
     print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
     
     print("1 - Default mode (view trends)\n2 - Custom mode\n")
@@ -256,7 +256,7 @@ def pmos_plot_demo_1():
         print("Error. Incorrect mode entered. Exiting ...")
         exit()
 
-    print("\nCodes : gm/id, vdsat, gm/w, gds/w, id/W, cgs/w, cgg/w, vth, gain, ft, gmbs/w, gm/gmbs \n")
+    print("\nEnter ( space-separated ) : gm/id, vdsat, gm/w, gds/w, id/W, cgs/w, cgg/w, vth, gain, ft, gmbs/w, gm/gmbs \n")
     plot_superlist = ["gm/id", "vdsat", "gm/w", "gds/w", "id/w", "cgs/w", "cgg/w", "vth", "gain", "ft", "gmbs/w", "gm/gmbs"]
     plot_list = input("Enter quantities you want to plot using appropriate codes : ").split()
 
