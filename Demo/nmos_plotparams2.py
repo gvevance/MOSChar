@@ -3,7 +3,6 @@
 # Width is user-input
 # Run the code in a for loop and get back the numpy arrays for post-processing
 
-from subprocess import PIPE
 from subprocess import call
 import os
 import numpy as np
@@ -14,6 +13,7 @@ import matplotlib.pyplot as plt
 cir_filename = os.path.join(os.getcwd(),'tmp/temp_nmos_v2_b.cir')
 value_file = os.path.join(os.getcwd(),'tmp/values_nmos_v2_b.txt')
 model_file = os.path.join(os.getcwd(),'Model_files/130nm_bulk.pm')
+log_file = os.path.join(os.getcwd(),'tmp/nmos_plotparams2.log')
 
 def generate_contents(length,wmin,wmax,i0,vds):
     
@@ -305,7 +305,7 @@ def nmos_plot_demo_2():
     for length in len_list:
         contents = generate_contents(length,wmin,wmax,i0,vds)
         write_cir(contents)
-        call(['ngspice',cir_filename],stdout=PIPE) 
+        call(f"ngspice {cir_filename} > {log_file}",shell=True) 
 
         params = prepare_for_post_proc(i0)
 

@@ -3,7 +3,6 @@
 # (mainly small signal parameters). Will probably involve some 
 # efficient DSA search algorithm and some efficient file handling.
 
-from subprocess import PIPE
 from subprocess import call
 import os
 import numpy as np
@@ -14,6 +13,7 @@ cir_filename = os.path.join(os.getcwd(),'tmp/temp_pmos_v3.cir')
 value_file = os.path.join(os.getcwd(),'tmp/values_pmos_v3.txt')
 model_file = os.path.join(os.getcwd(),'Model_files/130nm_bulk.pm')
 constraints_file = os.path.join(os.getcwd(),"tmp/constraints_pmos.txt")
+log_file = os.path.join(os.getcwd(),'tmp/pmos_opsearch.log')
 
 width = '100' # in um
 
@@ -246,7 +246,7 @@ def pmos_opsearch_demo_1():
     define_constraints()  # does not need any input or output. Writes to a file.
     contents = generate_contents(len,vsg_min,vsg_max)
     write_cir(contents)
-    call(['ngspice',cir_filename],stdout=PIPE)
+    call(f"ngspice {cir_filename} > {log_file}",shell=True) 
 
     params = extract_params()
     op_search(params)  # does not need any input. Uses the sim results and constraints file 

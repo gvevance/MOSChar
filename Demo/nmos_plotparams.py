@@ -3,7 +3,6 @@
 # Width is user-input
 # Run the code in a for loop and get back the numpy arrays for post-processing
 
-from subprocess import PIPE
 from subprocess import call
 import os
 import numpy as np
@@ -288,7 +287,7 @@ def nmos_plot_demo_1():
     for length in len_list:
         contents = generate_contents(length,width)
         write_cir(contents)
-        call(["ngspice", cir_filename],stdout=PIPE) 
+        call(f"ngspice {cir_filename} > {log_file}",shell=True) 
         
         params = prepare_for_post_proc(width)
 
