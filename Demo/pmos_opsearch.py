@@ -240,16 +240,43 @@ id/W = {id_wid[bool_vec][i]:.2f}\tgm/W = {gm_wid[bool_vec][i]:.2f}\tgain = {gain
 def pmos_opsearch_demo_1():
 
     print("\n****** Diode connected PMOS op point search ******\n")
+    minVSG , maxVSG = 0 , 1.3
     vsg_min , vsg_max = str(input("Enter VSG range (in volts) : ")).split()
-    len = str(input("Enter length ( in um ) : "))
+    
+    while (True) :
+        break_ = False
+        try :
+            if float(vsg_min) < minVSG or float(vsg_max) > maxVSG :
+                vsg_min , vsg_max = str(input(f"Enter VSG range (in volts between {minVSG} and {maxVSG})  : ")).split()
 
-    try :
-        if len < 0.13 :
-            print("Length should be less than Lmin = 0.13u")
+            elif float(vsg_min) > float(vsg_max) :
+                vsg_min , vsg_max = str(input("Enter valid VSG range (in volts) (<min> <max>) : ")).split()
 
-    except :
-        print("Error in entered length. Aborting ... ")
-        exit()
+            else :
+                break_ = True
+
+        except :
+            vsg_min , vsg_max = str(input(f"Enter valid VSG range (in volts) (<min>{minVSG}> <max<{maxVSG}>) : ")).split()            
+
+        if break_ :
+            break
+
+    lmin = 0.13
+    len = str(input(f"Enter length (in um > {lmin}) : "))
+
+    while (True) :
+        break_ = False
+        try :
+            if float(len) < lmin :
+                len = input(f"Entered length is too small. Enter length (in um > {lmin}) : ")
+            else :
+                break_ = True
+
+        except :
+            len = input((f"Error in entered length. Enter length (in um > {lmin}) : "))
+
+        if break_ :
+            break            
 
     define_constraints()  # does not need any input or output. Writes to a file.
     contents = generate_contents(len,vsg_min,vsg_max)

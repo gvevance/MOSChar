@@ -271,19 +271,19 @@ def pmos_plot_demo_1():
                 break
 
 
-        len_list = str(input(f"\nEnter lengths (> {lmin}um) (space-separated) : ")).split()
+        len_list = str(input(f"\nEnter lengths (in um > {lmin}) (space-separated) : ")).split()
 
         while (True) :
             
             break_ = False
             try :
                 if any([(float(length) < lmin) for length in len_list]) :
-                    len_list = str(input(f"At least one entered length is too small. Enter lengths (> {lmin}um) (space-separated) : ")).split()
+                    len_list = str(input(f"At least one entered length is too small. Enter lengths (in um > {lmin}) (space-separated) : ")).split()
                 else :
                     break_ = True
                     
             except :
-                len_list = str(input(f"Improper lengths entered. Enter lengths (> {lmin}um) (space-separated) : ")).split()
+                len_list = str(input(f"Improper lengths entered. Enter lengths (in um > {lmin}) (space-separated) : ")).split()
 
             if break_ :
                 break
