@@ -249,8 +249,44 @@ def pmos_plot_demo_1():
         len_list = ['0.3']
 
     elif mode == 2 :
-        width = str(input("\nEnter width (in um) : "))
-        len_list = str(input("Enter lengths (in um) (space-separated) : ")).split()
+        lmin = 0.13
+        wmin = 0.2
+
+        width = str(input(f"\nEnter width (> {wmin}um) : "))
+        
+        while (True) :
+            
+            break_ = False
+            try :
+                if float(width) < wmin :
+                    width = str(input(f"Entered width is too small. Enter width (> {wmin}um) : "))
+                    
+                else :
+                    break_ = True
+                    
+            except :
+                width = str(input(f"Improper width entered. Enter width (> {wmin}um) : "))
+
+            if break_ :
+                break
+
+
+        len_list = str(input(f"\nEnter lengths (> {lmin}um) (space-separated) : ")).split()
+
+        while (True) :
+            
+            break_ = False
+            try :
+                if any([(float(length) < lmin) for length in len_list]) :
+                    len_list = str(input(f"At least one entered length is too small. Enter lengths (> {lmin}um) (space-separated) : ")).split()
+                else :
+                    break_ = True
+                    
+            except :
+                len_list = str(input(f"Improper lengths entered. Enter lengths (> {lmin}um) (space-separated) : ")).split()
+
+            if break_ :
+                break
     
     else :
         print("Error. Incorrect mode entered. Exiting ...")

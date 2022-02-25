@@ -11,7 +11,7 @@ from Demo.pmos_opsearch import pmos_opsearch_demo_1
 
 def start_demo() :
     
-    print("\n****** Demo ****** \n")
+    print("\n****** Demo (130nm_bulk.pm model file) ****** \n")
     print("1. MOS device characterisation \n2. Search for operating point staisfying constraints \n3. Exit")
     choice = input("\nEnter option : ")
 
