@@ -32,23 +32,87 @@ def define_constraints():
     c_file = open(constraints_file,'a') 
     ret = "start"
     while(ret != '0'):
-        ret = input("Enter option : ").strip()
+        ret = input("\nEnter option : ").strip()
         
         if (ret == "gm_wid") :
-            gm_wid_min , gm_wid_max = input("Enter gm/W range : ").split()
-            c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    gm_wid_min , gm_wid_max = input("Enter gm/W range (<min> <max>) : ").split()
+                    
+                    try :
+                        if float(gm_wid_min) < float(gm_wid_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
+                    break 
 
         elif (ret == "gds_wid"):
-            gds_wid_min , gds_wid_max = input("Enter gds/W range : ").split()
-            c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    gds_wid_min , gds_wid_max = input("Enter gds/W range : ").split()
 
+                    try :
+                        if float(gds_wid_min) < float(gds_wid_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
+                    break
+                
         elif (ret == "gain"):
-            gain_min , gain_max = input("Enter gain range : ").split()
-            c_file.write("gain "+gain_min+" "+gain_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    gain_min , gain_max = input("Enter gain range : ").split()
+
+                    try :
+                        if float(gain_min) < float(gain_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gain "+gain_min+" "+gain_max+"\n")
+                    break
 
         elif (ret == "ft"):
-            ft_min , ft_max = input("Enter ft range : ").split()
-            c_file.write("ft "+ft_min+" "+ft_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    ft_min , ft_max = input("Enter ft range : ").split()
+                    try :
+                        if float(ft_min) < float(ft_max) :
+                            break_ = True
+                    
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("ft "+ft_min+" "+ft_max+"\n")
+                    break
+                
 
         elif (ret == "0"):
             print()
@@ -256,13 +320,13 @@ def pmos_opsearch_demo_1():
                 break_ = True
 
         except :
-            vsg_min , vsg_max = str(input(f"Enter valid VSG range (in volts) (<min>{minVSG}> <max<{maxVSG}>) : ")).split()            
+            vsg_min , vsg_max = str(input(f"Enter valid VSG range (in volts) (<min >{minVSG}> <max <{maxVSG}>) : ")).split()            
 
         if break_ :
             break
 
     lmin = 0.13
-    len = str(input(f"Enter length (in um > {lmin}) : "))
+    len = str(input(f"\nEnter length (in um > {lmin}) : "))
 
     while (True) :
         break_ = False

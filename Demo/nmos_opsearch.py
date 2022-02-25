@@ -23,7 +23,7 @@ def define_constraints():
         i.e., 10 and a very large number. '''
     
     print("\nWhat parameters do you have constraints on ? Enter appropriate code (\"0\" when done)...\n")
-    print("\"gm_wid\" - gm/W \n\"gds_wid\" - gds/W \n\"gain\" - gm/gds \n\"ft\" - ft \n")
+    print("\"gm_wid\" - gm/W \n\"gds_wid\" - gds/W \n\"gain\" - gm/gds \n\"ft\" - ft ")
     
     # clear already existing lines in constraints.txt (create it if it doesn' exist)
     c_file = open(constraints_file,'w+')
@@ -32,23 +32,87 @@ def define_constraints():
     c_file = open(constraints_file,'a') 
     ret = "start"
     while(ret != '0'):
-        ret = input("Enter option : ").strip()
+        ret = input("\nEnter option : ").strip()
         
         if (ret == "gm_wid") :
-            gm_wid_min , gm_wid_max = input("Enter gm/W range : ").split()
-            c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    gm_wid_min , gm_wid_max = input("Enter gm/W range (<min> <max>) : ").split()
+                    
+                    try :
+                        if float(gm_wid_min) < float(gm_wid_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
+                    break 
 
         elif (ret == "gds_wid"):
-            gds_wid_min , gds_wid_max = input("Enter gds/W range : ").split()
-            c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    gds_wid_min , gds_wid_max = input("Enter gds/W range : ").split()
 
+                    try :
+                        if float(gds_wid_min) < float(gds_wid_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
+                    break
+                
         elif (ret == "gain"):
-            gain_min , gain_max = input("Enter gain range : ").split()
-            c_file.write("gain "+gain_min+" "+gain_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    gain_min , gain_max = input("Enter gain range : ").split()
+
+                    try :
+                        if float(gain_min) < float(gain_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gain "+gain_min+" "+gain_max+"\n")
+                    break
 
         elif (ret == "ft"):
-            ft_min , ft_max = input("Enter ft range : ").split()
-            c_file.write("ft "+ft_min+" "+ft_max+"\n")
+            while (True) :
+                break_ = False
+                try :
+                    ft_min , ft_max = input("Enter ft range : ").split()
+                    try :
+                        if float(ft_min) < float(ft_max) :
+                            break_ = True
+                    
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("ft "+ft_min+" "+ft_max+"\n")
+                    break
+                
 
         elif (ret == "0"):
             print()
@@ -253,7 +317,7 @@ def nmos_opsearch_demo_1():
                 break_ = True
 
         except :
-            vgs_min , vgs_max = str(input(f"Enter valid VGS range (in volts) (<min>{minVGS}> <max<{maxVGS}>) : ")).split()            
+            vgs_min , vgs_max = str(input(f"Enter valid VGS range (in volts) (<min >{minVGS}> <max <{maxVGS}>) : ")).split()            
 
         if break_ :
             break
