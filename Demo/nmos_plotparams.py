@@ -149,7 +149,7 @@ def plot_figures(params,length,plot_list):
     if any([x for x in plot_list if x != "gm/id"]) :
         x = input("Plot versus gm/id or vgs ? : (1/2) ")
         while x not in ['1','2'] :
-            input("Invalid input entered. Plot versus gm/id or vgs ? : (1/2) ")
+            x = input("Invalid input entered. Plot versus gm/id or vgs ? : (1/2) ")
         
     if "gm/id" in plot_list:
         plt.figure(1) # gm/Id vs vgs
@@ -407,7 +407,7 @@ def nmos_plot_demo_1():
         print("Error. Incorrect mode entered. Exiting ...")
         exit()
 
-    print("\nEnter ( space-separated ) : gm/id, vdsat, gm/w, gds/w, id/W, cgs/w, cgg/w, vth, gain, ft, gmbs/w, gm/gmbs \n")
+    print("\nEnter ( space-separated ) : gm/id, vdsat, gm/w, gds/w, id/w, cgs/w, cgg/w, vth, gain, ft, gmbs/w, gm/gmbs \n")
     plot_superlist = ["gm/id", "vdsat", "gm/w", "gds/w", "id/w", "cgs/w", "cgg/w", "vth", "gain", "ft", "gmbs/w", "gm/gmbs"]
     plot_list = input("Enter quantities you want to plot using appropriate codes : ").split()
 
