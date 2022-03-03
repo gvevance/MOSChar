@@ -139,7 +139,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "id/w" in plot_list:
         plt.figure(2) # log10(id/W) vs gm/Id
-        plt.semilogy( gm_by_id , id_wid , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , id_wid , label='Len = '+length+'u' )
         plt.ylabel("Id/W")
         plt.xlabel("gm/Id")
         plt.title("Plot of Id/W vs gm/Id")
@@ -148,7 +148,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "gm/w" in plot_list:
         plt.figure(3) # log10(gm/W) vs gm/Id
-        plt.semilogy( gm_by_id , gm_wid , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , gm_wid , label='Len = '+length+'u' )
         plt.ylabel("gm/W")
         plt.xlabel("gm/Id")
         plt.title("Plot of gm/W vs gm/Id")
@@ -157,7 +157,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "gds/w" in plot_list:
         plt.figure(4) # log10(gds/W) vs gm/Id
-        plt.semilogy( gm_by_id , gds_wid , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , gds_wid , label='Len = '+length+'u' )
         plt.ylabel("gds/W")
         plt.xlabel("gm/Id")
         plt.title("Plot of gds/W vs gm/Id")
@@ -166,7 +166,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "gain" in plot_list:
         plt.figure(5) # log10(gain/W) vs gm/Id
-        plt.semilogy( gm_by_id , gain , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , gain , label='Len = '+length+'u' )
         plt.ylabel("gain")
         plt.xlabel("gm/Id")
         plt.title("Plot of gain vs gm/Id")
@@ -175,7 +175,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "cgg/w" in plot_list:
         plt.figure(6) # log10(cgg/W) vs gm/Id
-        plt.semilogy( gm_by_id , cgg_wid , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , cgg_wid , label='Len = '+length+'u' )
         plt.ylabel("cgg/W")
         plt.xlabel("gm/Id")
         plt.title("Plot of cgg/W vs gm/Id")
@@ -184,7 +184,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "cgs/w" in plot_list:
         plt.figure(7) # log10(cgs/W) vs gm/Id
-        plt.semilogy( gm_by_id , cgs_wid , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , cgs_wid , label='Len = '+length+'u' )
         plt.ylabel("cgs/W")
         plt.xlabel("gm/Id")
         plt.title("Plot of cgs/W vs gm/Id")
@@ -193,7 +193,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "ft" in plot_list:
         plt.figure(8) # log10(ft) vs gm/Id
-        plt.semilogy( gm_by_id , ft , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , ft , label='Len = '+length+'u' )
         plt.ylabel("ft")
         plt.xlabel("gm/Id")
         plt.title("Plot of ft vs gm/Id")
@@ -220,7 +220,7 @@ def plot_figures(sim_values,length,plot_list):
 
     if "gmbs/w" in plot_list:
         plt.figure(11) # log10(gmbs/W) vs gm/Id
-        plt.semilogy( gm_by_id , gmbs_wid , label='Len = '+length+'u' )
+        plt.plot( gm_by_id , gmbs_wid , label='Len = '+length+'u' )
         plt.ylabel("gmbs/W")
         plt.xlabel("gm/Id")
         plt.title("Plot of gmbs/W vs gm/Id")
@@ -252,7 +252,7 @@ def pmos_plot_demo_1():
         lmin = 0.13
         wmin = 0.2
 
-        width = str(input(f"\nEnter width (> {wmin}um) : "))
+        width = str(input(f"\nEnter width (in um > {wmin}) : "))
         
         while (True) :
             

@@ -146,113 +146,207 @@ def plot_figures(params,length,plot_list):
     gmbs_wid = params["gmbs_wid"]
     gm_by_gmbs = params["gm_by_gmbs"]
 
+    if any([x for x in plot_list if x != "gm/id"]) :
+        x = input("Plot versus gm/id or vgs ? : (1/2) ")
+        while x not in ['1','2'] :
+            input("Invalid input entered. Plot versus gm/id or vgs ? : (1/2) ")
+        
     if "gm/id" in plot_list:
         plt.figure(1) # gm/Id vs vgs
         plt.plot( vgs , gm_by_id , label='Len = '+length+'u' )
         plt.ylabel("gm/Id")
         plt.xlabel("Vgs")
-        plt.title("Plot of gm/Id vs Vgs")
         plt.grid(True)
         plt.legend()
+        plt.title("Plot of gm/Id vs Vgs")
 
     if "id/w" in plot_list:
         plt.figure(2) # log10(id/W) vs gm/Id
-        plt.semilogy( gm_by_id , id_wid , label='Len = '+length+'u' )
         plt.ylabel("Id/W")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of Id/W vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of Id/W vs gm/Id")
+            plt.plot( gm_by_id , id_wid , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of Id/W vs vgs")
+            plt.plot( vgs , id_wid , label='Len = '+length+'u' )
+            plt.legend()
 
     if "gm/w" in plot_list:
         plt.figure(3) # log10(gm/W) vs gm/Id
-        plt.semilogy( gm_by_id , gm_wid , label='Len = '+length+'u' )
         plt.ylabel("gm/W")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of gm/W vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of gm/W vs gm/Id")
+            plt.plot( gm_by_id , gm_wid , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of gm/W vs vgs")
+            plt.plot( vgs , gm_wid , label='Len = '+length+'u' )
+            plt.legend()
 
     if "gds/w" in plot_list:
         plt.figure(4) # log10(gds/W) vs gm/Id
-        plt.semilogy( gm_by_id , gds_wid , label='Len = '+length+'u' )
         plt.ylabel("gds/W")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of gds/W vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of gds/W vs gm/Id")
+            plt.plot( gm_by_id , gds_wid , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of gds/W vs vgs")
+            plt.plot( vgs , gds_wid , label='Len = '+length+'u' )
+            plt.legend()
 
     if "gain" in plot_list:
         plt.figure(5) # log10(gain/W) vs gm/Id
-        plt.semilogy( gm_by_id , gain , label='Len = '+length+'u' )
         plt.ylabel("gain")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of gain vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of gain vs gm/Id")
+            plt.plot( gm_by_id , gain , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of gain vs vgs")
+            plt.plot( vgs , gain , label='Len = '+length+'u' )
+            plt.legend()
 
     if "cgg/w" in plot_list:
         plt.figure(6) # log10(cgg/W) vs gm/Id
-        plt.semilogy( gm_by_id , cgg_wid , label='Len = '+length+'u' )
         plt.ylabel("cgg/W")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of cgg/W vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of cgg/W vs gm/Id")
+            plt.plot( gm_by_id , cgg_wid , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of cgg/W vs vgs")
+            plt.plot( vgs , cgg_wid , label='Len = '+length+'u' )
+            plt.legend()
 
     if "cgs/w" in plot_list:
         plt.figure(7) # log10(cgs/W) vs gm/Id
-        plt.semilogy( gm_by_id , cgs_wid , label='Len = '+length+'u' )
         plt.ylabel("cgs/W")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of cgs/W vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of cgs/W vs gm/Id")
+            plt.plot( gm_by_id , cgs_wid , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of cgs/W vs vgs")
+            plt.plot( vgs , cgs_wid , label='Len = '+length+'u' )
+            plt.legend()
 
     if "ft" in plot_list:
         plt.figure(8) # log10(ft) vs gm/Id
-        plt.semilogy( gm_by_id , ft , label='Len = '+length+'u' )
         plt.ylabel("ft")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of ft vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of ft vs gm/Id")
+            plt.plot( gm_by_id , ft , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of ft vs vgs")
+            plt.plot( vgs , ft , label='Len = '+length+'u' )
+            plt.legend()
 
     if "vdsat" in plot_list:
         plt.figure(9) # vdsat vs gm/Id
-        plt.plot( gm_by_id , vdsat , label='Len = '+length+'u' )
         plt.ylabel("vdsat")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of vdsat vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of vdsat vs gm/Id")
+            plt.plot( gm_by_id , vdsat , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of vdsat vs vgs")
+            plt.plot( vgs , vdsat , label='Len = '+length+'u' )
+            plt.legend()
 
     if "vth" in plot_list:
         plt.figure(10) # vth vs gm/Id
-        plt.plot( gm_by_id , vth , label='Len = '+length+'u' )
         plt.ylabel("vth")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of vth vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of vth vs gm/Id")
+            plt.plot( gm_by_id , vth , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of vth vs vgs")
+            plt.plot( vgs , vth , label='Len = '+length+'u' )
+            plt.legend()
 
     if "gmbs/w" in plot_list:
         plt.figure(11) # log10(gmbs/W) vs gm/Id
-        plt.semilogy( gm_by_id , gmbs_wid , label='Len = '+length+'u' )
         plt.ylabel("gmbs/W")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of gmbs/W vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+            plt.xlabel("gm/Id")
+            plt.title("Plot of gmbs/W vs gm/Id")
+            plt.plot( gm_by_id , gmbs_wid , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of gmbs/W vs vgs")
+            plt.plot( vgs , gmbs_wid , label='Len = '+length+'u' )
+            plt.legend()
 
     if "gm/gmbs" in plot_list:
         plt.figure(12) # log10(gm/gmbs) vs gm/Id
-        plt.plot( gm_by_id , gm_by_gmbs , label='Len = '+length+'u' )
         plt.ylabel("gm/gmbs")
-        plt.xlabel("gm/Id")
-        plt.title("Plot of gm/gmbs vs gm/Id")
         plt.grid(True)
-        plt.legend()
+        
+        if x == '1' :
+        
+            plt.xlabel("gm/Id")
+            plt.title("Plot of gm/gmbs vs gm/Id")
+            plt.plot( gm_by_id , gm_by_gmbs , label='Len = '+length+'u' )
+            plt.legend()
+        
+        else :
+            plt.xlabel("vgs")
+            plt.title("Plot of gm/gmbs vs vgs")
+            plt.plot( vgs , gm_by_gmbs , label='Len = '+length+'u' )
+            plt.legend()
 
 def nmos_plot_demo_1():
     
@@ -273,7 +367,7 @@ def nmos_plot_demo_1():
         lmin = 0.13
         wmin = 0.2
 
-        width = str(input(f"\nEnter width (> {wmin}um) : "))
+        width = str(input(f"\nEnter width (in um > {wmin}) : "))
         
         while (True) :
             
