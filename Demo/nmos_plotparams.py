@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
  
 cir_filename = os.path.join(os.getcwd(),'tmp/temp_nmos_v2.cir')
 value_file = os.path.join(os.getcwd(),'tmp/values_nmos_v2.txt')
-model_file = os.path.join(os.getcwd(),'Model_files/130nm_bulk.pm')
-log_file = os.path.join(os.getcwd(),'tmp/nmos_plotparams.log')
+MODEL_FILE = os.path.join(os.getcwd(),'MODEL_FILEs/130nm_bulk.pm')
+LOG_FILE = os.path.join(os.getcwd(),'tmp/nmos_plotparams.log')
 
 
 def generate_contents(length,width):
@@ -23,7 +23,7 @@ def generate_contents(length,width):
 *************************************
 * Include model file 
 *************************************
-.include {model_file}
+.include {MODEL_FILE}
 
 *************************************
 * Defining arameters 
@@ -418,7 +418,7 @@ def nmos_plot_demo_1():
     for length in len_list:
         contents = generate_contents(length,width)
         write_cir(contents)
-        call(f"ngspice {cir_filename} > {log_file}",shell=True) 
+        call(f"ngspice {cir_filename} > {LOG_FILE}",shell=True) 
         
         params = prepare_for_post_proc(width)
 
