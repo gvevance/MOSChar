@@ -4,8 +4,8 @@ Program starts from here.  '''
 
 from subprocess import call
 import os
-import numpy as np
-import matplotlib.pyplot as plt
+# import numpy as np
+# import matplotlib.pyplot as plt
 
 from Demo.nmos_plotparams import nmos_plot_demo_1
 from Demo.pmos_plotparams import pmos_plot_demo_1
@@ -13,11 +13,21 @@ from Demo.nmos_plotparams2 import nmos_plot_demo_2
 from Demo.pmos_plotparams2 import pmos_plot_demo_2
 
 from helper_functions.general import generate_netlist
+from helper_functions.general import write_netlist_to_file
 
 # from Demo.nmos_opsearch import nmos_opsearch_demo_1
 # from Demo.pmos_opsearch import pmos_opsearch_demo_1
 # from Demo.nmos_opsearch2 import nmos_opsearch_demo_2
 # from Demo.pmos_opsearch2 import pmos_opsearch_demo_2
+
+
+# global variable definition
+
+CWD = os.getcwd()
+MODEL_FILE = os.path.join(CWD,'Model_files/130nm_bulk.pm')
+NETLIST_FILE = os.path.join(CWD,'/tmp/filename.cir')    # change to appropriate 
+LOG_FILE = os.path.join(CWD,'tmp/filename.log')
+
 
 def start_menu() :
 
@@ -94,7 +104,7 @@ def start_menu() :
         for length in len_list:
             contents = generate_netlist(length,width)
             write_netlist_to_file(contents)
-            call(f"ngspice {cir_filename} > {log_file}",shell=True) 
+            call(f"ngspice {NETLIST_FILE} > {LOG_FILE}",shell=True) 
             
             params = prepare_for_post_proc(width)
 
