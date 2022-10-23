@@ -7,13 +7,19 @@ import os
 # import numpy as np
 # import matplotlib.pyplot as plt
 
-from Demo.nmos_plotparams import nmos_plot_demo_1
+# from Demo.nmos_plotparams import nmos_plot_demo_1
 from Demo.pmos_plotparams import pmos_plot_demo_1
 from Demo.nmos_plotparams2 import nmos_plot_demo_2
 from Demo.pmos_plotparams2 import pmos_plot_demo_2
 
-from helper_functions.general import generate_netlist
+from helper_functions.general import init_setup
+from helper_functions.general import generate_netlist_circuit_1
 from helper_functions.general import write_netlist_to_file
+
+import helper_functions.circuit1 as ckt1
+import helper_functions.circuit2 as ckt2
+import helper_functions.circuit3 as ckt3
+import helper_functions.circuit4 as ckt4
 
 # from Demo.nmos_opsearch import nmos_opsearch_demo_1
 # from Demo.pmos_opsearch import pmos_opsearch_demo_1
@@ -21,15 +27,9 @@ from helper_functions.general import write_netlist_to_file
 # from Demo.pmos_opsearch2 import pmos_opsearch_demo_2
 
 
-# global variable definition
-
-CWD = os.getcwd()
-MODEL_FILE = os.path.join(CWD,'Model_files/130nm_bulk.pm')
-NETLIST_FILE = os.path.join(CWD,'/tmp/filename.cir')    # change to appropriate 
-LOG_FILE = os.path.join(CWD,'tmp/filename.log')
-
-
 def start_menu() :
+
+    CWD, MODEL_DIR, MODEL_FILE, TMP_DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE = init_setup()
 
     print("\n1. Diode connected NMOS, fixed width and VGS sweep \n2. Diode connected NMOS, fixed Id and width sweep \n\
 3. Diode connected PMOS, fixed width and VSG sweep \n4. Diode connected PMOS ,fixed Id and width sweep ")
@@ -102,22 +102,17 @@ def start_menu() :
         print()
 
         for length in len_list:
-            contents = generate_netlist(length,width)
-            write_netlist_to_file(contents)
+            netlist = generate_netlist_circuit_1(MODEL_FILE,SAVEDATA_FILE,length,width)
+            write_netlist_to_file(TMP_DIR,NETLIST_FILE,netlist)
             call(f"ngspice {NETLIST_FILE} > {LOG_FILE}",shell=True) 
             
-            params = prepare_for_post_proc(width)
-
-            plot_figures(params,length,plot_list)
+            # post processing
+            data_dict = ckt1.extract_data(SAVEDATA_FILE,width)
             
-        plt.show()
-
-
-
-
-
-
-
+            # plotting
+            ckt1.plot_from_data_dict(data_dict,length,plot_list)
+            
+        ckt1.show_plots()
 
 
     elif circuit == '2' :
