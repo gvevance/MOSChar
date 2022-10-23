@@ -5,11 +5,11 @@ Program starts from here.  '''
 from Demo.nmos_plotparams import nmos_plot_demo_1
 from Demo.pmos_plotparams import pmos_plot_demo_1
 from Demo.nmos_plotparams2 import nmos_plot_demo_2
-# from Demo.pmos_plotparams2 import pmos_plot_demo_2
+from Demo.pmos_plotparams2 import pmos_plot_demo_2
 from Demo.nmos_opsearch import nmos_opsearch_demo_1
 from Demo.pmos_opsearch import pmos_opsearch_demo_1
-# from Demo.nmos_opsearch2 import nmos_opsearch_demo_2
-# from Demo.nmos_opsearch2 import nmos_opsearch_demo_2
+from Demo.nmos_opsearch2 import nmos_opsearch_demo_2
+from Demo.pmos_opsearch2 import pmos_opsearch_demo_2
 
 def start_menu() :
 
@@ -31,7 +31,7 @@ def start_menu() :
             nmos_plot_demo_2()
     
         elif choice2 == '4' :
-            # pmos_plot_demo_2()
+            pmos_plot_demo_2()
             pass
 
         elif choice2 == '5' :
@@ -53,11 +53,11 @@ def start_menu() :
             pmos_opsearch_demo_1()
 
         elif choice2 == '3' :
-            # nmos_opsearch_demo_2()
+            nmos_opsearch_demo_2()
             pass
 
         elif choice2 == '4' :
-            # pmos_opsearch_demo_2()
+            pmos_opsearch_demo_2()
             pass
 
         elif choice2 == '5' :
