@@ -96,10 +96,10 @@ def start_menu() :
             
             # search for operating point
             ckt1.define_search_conditions(SEARCH_DEFINE_FILE)     # define search condtions
-            ckt1.opsearch(data_dict,SEARCH_DEFINE_FILE)
+            search_result_bool_vec = ckt1.opsearch(data_dict,SEARCH_DEFINE_FILE)
 
             # plotting
-            ckt1.plot_from_data_dict(data_dict,length,plot_list)
+            ckt1.plot_from_data_dict(data_dict,search_result_bool_vec,length,plot_list)
             
         ckt1.show_plots()
 

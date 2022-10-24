@@ -252,12 +252,14 @@ def opsearch(data_dict,SEARCH_DEFINE_FILE) :
     
     bool_vec = (gm_wid<gm_wid_max) & (gm_wid>gm_wid_min) & (gds_wid<gds_wid_max) & (gds_wid>gds_wid_min) & \
                (gain<gain_max) & (gain>gain_min) & (ft<ft_max) & (ft>ft_min)
-    print(bool_vec)
+    
+    # print(type(bool_vec))
+    return bool_vec
 
 
 
 
-def plot_from_data_dict(data_dict,length,plot_list):
+def plot_from_data_dict(data_dict,search_result_bool_vec,length,plot_list):
 
     vgs = data_dict["vgs"]
     gm_by_id = data_dict["gm_by_id"]
@@ -273,6 +275,11 @@ def plot_from_data_dict(data_dict,length,plot_list):
     gmbs_wid = data_dict["gmbs_wid"]
     gm_by_gmbs = data_dict["gm_by_gmbs"]
 
+    search_active = False
+    if False in search_result_bool_vec :
+        search_active = True
+        print("search is active")
+
     if any([x for x in plot_list if x != "gm/id"]) :
         x = input("Plot versus gm/id or vgs ? : (1/2) ")
         while x not in ['1','2'] :
@@ -287,6 +294,9 @@ def plot_from_data_dict(data_dict,length,plot_list):
         plt.legend()
         plt.title("Plot of gm/Id vs Vgs")
 
+        if search_active :
+            plt.plot(vgs[search_result_bool_vec],gm_by_id[search_result_bool_vec],'g*')
+
     if "id/w" in plot_list:
         plt.figure(2) # log10(id/W) vs gm/Id
         plt.ylabel("Id/W")
@@ -297,12 +307,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of Id/W vs gm/Id")
             plt.plot( gm_by_id , id_wid , label='Len = '+length+'u' )
             plt.legend()
-        
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],id_wid[search_result_bool_vec],'g*')
+
         else :
             plt.xlabel("vgs")
             plt.title("Plot of Id/W vs vgs")
             plt.plot( vgs , id_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],id_wid[search_result_bool_vec],'g*')
 
     if "gm/w" in plot_list:
         plt.figure(3) # log10(gm/W) vs gm/Id
@@ -314,12 +330,19 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of gm/W vs gm/Id")
             plt.plot( gm_by_id , gm_wid , label='Len = '+length+'u' )
             plt.legend()
-        
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],gm_wid[search_result_bool_vec],'g*')
+
         else :
             plt.xlabel("vgs")
             plt.title("Plot of gm/W vs vgs")
             plt.plot( vgs , gm_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],gm_wid[search_result_bool_vec],'g*')
+
 
     if "gds/w" in plot_list:
         plt.figure(4) # log10(gds/W) vs gm/Id
@@ -331,6 +354,10 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of gds/W vs gm/Id")
             plt.plot( gm_by_id , gds_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],gds_wid[search_result_bool_vec],'g*')
+
         
         else :
             plt.xlabel("vgs")
@@ -338,6 +365,9 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.plot( vgs , gds_wid , label='Len = '+length+'u' )
             plt.legend()
 
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],gds_wid[search_result_bool_vec],'g*')
+    
     if "gain" in plot_list:
         plt.figure(5) # log10(gain/W) vs gm/Id
         plt.ylabel("gain")
@@ -348,13 +378,19 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of gain vs gm/Id")
             plt.plot( gm_by_id , gain , label='Len = '+length+'u' )
             plt.legend()
-        
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],gain[search_result_bool_vec],'g*')
+
         else :
             plt.xlabel("vgs")
             plt.title("Plot of gain vs vgs")
             plt.plot( vgs , gain , label='Len = '+length+'u' )
             plt.legend()
 
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],gain[search_result_bool_vec],'g*')
+    
     if "cgg/w" in plot_list:
         plt.figure(6) # log10(cgg/W) vs gm/Id
         plt.ylabel("cgg/W")
@@ -365,12 +401,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of cgg/W vs gm/Id")
             plt.plot( gm_by_id , cgg_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],cgg_wid[search_result_bool_vec],'g*')
         
         else :
             plt.xlabel("vgs")
             plt.title("Plot of cgg/W vs vgs")
             plt.plot( vgs , cgg_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],cgg_wid[search_result_bool_vec],'g*')
 
     if "cgs/w" in plot_list:
         plt.figure(7) # log10(cgs/W) vs gm/Id
@@ -382,12 +424,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of cgs/W vs gm/Id")
             plt.plot( gm_by_id , cgs_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],cgs_wid[search_result_bool_vec],'g*')
         
         else :
             plt.xlabel("vgs")
             plt.title("Plot of cgs/W vs vgs")
             plt.plot( vgs , cgs_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],cgs_wid[search_result_bool_vec],'g*')
 
     if "ft" in plot_list:
         plt.figure(8) # log10(ft) vs gm/Id
@@ -400,12 +448,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.plot( gm_by_id , ft , label='Len = '+length+'u' )
             plt.legend()
         
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],ft[search_result_bool_vec],'g*')
+        
         else :
             plt.xlabel("vgs")
             plt.title("Plot of ft vs vgs")
             plt.plot( vgs , ft , label='Len = '+length+'u' )
             plt.legend()
 
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],ft[search_result_bool_vec],'g*')
+    
     if "vdsat" in plot_list:
         plt.figure(9) # vdsat vs gm/Id
         plt.ylabel("vdsat")
@@ -416,12 +470,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of vdsat vs gm/Id")
             plt.plot( gm_by_id , vdsat , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],vdsat[search_result_bool_vec],'g*')
         
         else :
             plt.xlabel("vgs")
             plt.title("Plot of vdsat vs vgs")
             plt.plot( vgs , vdsat , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],vdsat[search_result_bool_vec],'g*')
 
     if "vth" in plot_list:
         plt.figure(10) # vth vs gm/Id
@@ -433,12 +493,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of vth vs gm/Id")
             plt.plot( gm_by_id , vth , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],vth[search_result_bool_vec],'g*')
         
         else :
             plt.xlabel("vgs")
             plt.title("Plot of vth vs vgs")
             plt.plot( vgs , vth , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],vth[search_result_bool_vec],'g*')
 
     if "gmbs/w" in plot_list:
         plt.figure(11) # log10(gmbs/W) vs gm/Id
@@ -450,12 +516,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of gmbs/W vs gm/Id")
             plt.plot( gm_by_id , gmbs_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],gmbs_wid[search_result_bool_vec],'g*')
         
         else :
             plt.xlabel("vgs")
             plt.title("Plot of gmbs/W vs vgs")
             plt.plot( vgs , gmbs_wid , label='Len = '+length+'u' )
             plt.legend()
+
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],gmbs_wid[search_result_bool_vec],'g*')
 
     if "gm/gmbs" in plot_list:
         plt.figure(12) # log10(gm/gmbs) vs gm/Id
@@ -468,13 +540,18 @@ def plot_from_data_dict(data_dict,length,plot_list):
             plt.title("Plot of gm/gmbs vs gm/Id")
             plt.plot( gm_by_id , gm_by_gmbs , label='Len = '+length+'u' )
             plt.legend()
-        
+
+            if search_active :
+                plt.plot(gm_by_id[search_result_bool_vec],gm_by_gmbs[search_result_bool_vec],'g*')
+
         else :
             plt.xlabel("vgs")
             plt.title("Plot of gm/gmbs vs vgs")
             plt.plot( vgs , gm_by_gmbs , label='Len = '+length+'u' )
             plt.legend()
 
+            if search_active :
+                plt.plot(vgs[search_result_bool_vec],gm_by_gmbs[search_result_bool_vec],'g*')
 
 def show_plots() :
     plt.show()
