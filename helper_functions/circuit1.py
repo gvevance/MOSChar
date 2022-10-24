@@ -105,21 +105,173 @@ def extract_data(SAVEDATA_FILE,width) :
     return data_dict
 
 
-def plot_from_data_dict(params,length,plot_list):
+def define_search_conditions(SEARCH_DEFINE_FILE) :
+    ''' Define the constraints to search for after user-input. Writes to a file for the program to read from. 
+        Range is to be entered carefully. If you want gm/W > 10, enter the range as "10 10000",
+        i.e., 10 and a very large number. '''
+    
+    print("\nWhat parameters do you have constraints on ? Enter appropriate code ...\n")
+    print("\"gm_wid\" - gm/W \n\"gds_wid\" - gds/W \n\"gain\" - gm/gds \n\"ft\" - ft ")
+    
+    # clear already existing lines in constraints.txt (create it if it doesn' exist)
+    c_file = open(SEARCH_DEFINE_FILE,'w+')
+    c_file.close()
 
-    vgs = params["vgs"]
-    gm_by_id = params["gm_by_id"]
-    id_wid = params["id_wid"]
-    vdsat = params["vdsat"]
-    cgs_wid = params["cgs_wid"]
-    cgg_wid = params["cgg_wid"]
-    gm_wid = params["gm_wid"]
-    gds_wid = params["gds_wid"]
-    vth = params["vth"]
-    gain = params["gain"]
-    ft = params["ft"]
-    gmbs_wid = params["gmbs_wid"]
-    gm_by_gmbs = params["gm_by_gmbs"]
+    c_file = open(SEARCH_DEFINE_FILE,'a') 
+
+    while(True):
+        ret = input("\nEnter option : ").strip()
+            
+        if (ret == "gm_wid") :
+            while (True) :
+                break_ = False
+                try :
+                    gm_wid_min , gm_wid_max = input("Enter gm/W range (<min> <max>) : ").split()
+                    
+                    try :
+                        if float(gm_wid_min) < float(gm_wid_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
+                    break 
+
+        elif (ret == "gds_wid"):
+            while (True) :
+                break_ = False
+                try :
+                    gds_wid_min , gds_wid_max = input("Enter gds/W range : ").split()
+
+                    try :
+                        if float(gds_wid_min) < float(gds_wid_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
+                    break
+                
+        elif (ret == "gain"):
+            while (True) :
+                break_ = False
+                try :
+                    gain_min , gain_max = input("Enter gain range : ").split()
+
+                    try :
+                        if float(gain_min) < float(gain_max) :
+                            break_ = True
+
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("gain "+gain_min+" "+gain_max+"\n")
+                    break
+
+        elif (ret == "ft"):
+            while (True) :
+                break_ = False
+                try :
+                    ft_min , ft_max = input("Enter ft range : ").split()
+                    try :
+                        if float(ft_min) < float(ft_max) :
+                            break_ = True
+                    
+                    except ValueError :
+                        print("Improper values entered. ",end="")
+
+                except ValueError:
+                    print("Enter values in the right format. ",end="")
+
+                if break_ :
+                    c_file.write("ft "+ft_min+" "+ft_max+"\n")
+                    break
+                
+        else :
+            c_file.close()
+            break
+
+
+def opsearch(data_dict,SEARCH_DEFINE_FILE) :
+    
+    vgs = data_dict["vgs"]
+    gm_by_id = data_dict["gm_by_id"]
+    id_wid = data_dict["id_wid"]
+    vdsat = data_dict["vdsat"]
+    cgs_wid = data_dict["cgs_wid"]
+    cgg_wid = data_dict["cgg_wid"]
+    gm_wid = data_dict["gm_wid"]
+    gds_wid = data_dict["gds_wid"]
+    vth = data_dict["vth"]
+    gain = data_dict["gain"]
+    ft = data_dict["ft"]
+    gmbs_wid = data_dict["gmbs_wid"]
+    gm_by_gmbs = data_dict["gm_by_gmbs"]
+    
+    # print(vgs[(gm_wid <50) & (gm_wid > 30)])
+
+    # initial condition values
+    gm_wid_min , gds_wid_min , gain_min , ft_min = 0,0,0,0
+    gm_wid_max , gds_wid_max , gain_max , ft_max = 1e16,1e16,1e16,1e16 
+    
+    # parse constraints text file
+    with open(SEARCH_DEFINE_FILE) as c_file :
+        c_file_lines = c_file.readlines()
+    
+    for line in c_file_lines :
+        
+        name,llim,ulim = line.split()
+        llim = float(llim)
+        ulim = float(ulim)
+
+        if name == 'gm/W' :
+            gm_wid_min , gm_wid_max = llim , ulim 
+        elif name == 'gds/W' :
+            gds_wid_min , gds_wid_max = llim , ulim
+        elif name == 'gain' :
+            gain_min , gain_max = llim , ulim
+        elif name == 'ft' :
+            ft_min , ft_max = llim , ulim
+        else :
+            print("Error in constraints.txt")
+            exit()
+    
+    bool_vec = (gm_wid<gm_wid_max) & (gm_wid>gm_wid_min) & (gds_wid<gds_wid_max) & (gds_wid>gds_wid_min) & \
+               (gain<gain_max) & (gain>gain_min) & (ft<ft_max) & (ft>ft_min)
+    print(bool_vec)
+
+
+
+
+def plot_from_data_dict(data_dict,length,plot_list):
+
+    vgs = data_dict["vgs"]
+    gm_by_id = data_dict["gm_by_id"]
+    id_wid = data_dict["id_wid"]
+    vdsat = data_dict["vdsat"]
+    cgs_wid = data_dict["cgs_wid"]
+    cgg_wid = data_dict["cgg_wid"]
+    gm_wid = data_dict["gm_wid"]
+    gds_wid = data_dict["gds_wid"]
+    vth = data_dict["vth"]
+    gain = data_dict["gain"]
+    ft = data_dict["ft"]
+    gmbs_wid = data_dict["gmbs_wid"]
+    gm_by_gmbs = data_dict["gm_by_gmbs"]
 
     if any([x for x in plot_list if x != "gm/id"]) :
         x = input("Plot versus gm/id or vgs ? : (1/2) ")

@@ -28,9 +28,9 @@ import helper_functions.circuit4 as ckt4
 
 def start_menu() :
 
-    CWD, MODEL_DIR, MODEL_FILE, TMP_DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE = init_setup()
+    CWD, MODEL_DIR, MODEL_FILE, TMP_DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE, SEARCH_DEFINE_FILE = init_setup()
     print(CWD,MODEL_DIR,MODEL_FILE,TMP_DIR,NETLIST_FILE,LOG_FILE,SAVEDATA_FILE)
-    
+
     print("\n1. Diode connected NMOS, fixed width and VGS sweep \n2. Diode connected NMOS, fixed Id and width sweep \n\
 3. Diode connected PMOS, fixed width and VSG sweep \n4. Diode connected PMOS ,fixed Id and width sweep ")
     circuit = input("\nEnter circuit configuration to simulate : ")
@@ -94,6 +94,10 @@ def start_menu() :
             # post processing
             data_dict = ckt1.extract_data(SAVEDATA_FILE,width)
             
+            # search for operating point
+            ckt1.define_search_conditions(SEARCH_DEFINE_FILE)     # define search condtions
+            ckt1.opsearch(data_dict,SEARCH_DEFINE_FILE)
+
             # plotting
             ckt1.plot_from_data_dict(data_dict,length,plot_list)
             
