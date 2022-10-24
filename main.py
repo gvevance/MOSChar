@@ -13,7 +13,6 @@ from Demo.nmos_plotparams2 import nmos_plot_demo_2
 from Demo.pmos_plotparams2 import pmos_plot_demo_2
 
 from helper_functions.general import init_setup
-from helper_functions.general import generate_netlist_circuit_1
 from helper_functions.general import write_netlist_to_file
 
 import helper_functions.circuit1 as ckt1
@@ -30,7 +29,8 @@ import helper_functions.circuit4 as ckt4
 def start_menu() :
 
     CWD, MODEL_DIR, MODEL_FILE, TMP_DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE = init_setup()
-
+    print(CWD,MODEL_DIR,MODEL_FILE,TMP_DIR,NETLIST_FILE,LOG_FILE,SAVEDATA_FILE)
+    
     print("\n1. Diode connected NMOS, fixed width and VGS sweep \n2. Diode connected NMOS, fixed Id and width sweep \n\
 3. Diode connected PMOS, fixed width and VSG sweep \n4. Diode connected PMOS ,fixed Id and width sweep ")
     circuit = input("\nEnter circuit configuration to simulate : ")
@@ -39,59 +39,44 @@ def start_menu() :
 
         print("\n****** Diode connected NMOS ******\n")
         print("Minimum length in the 130nm_bulk.pm technology is 0.13u. Minimum width is probably some 200n\n")
+
+        lmin = 0.13
+        wmin = 0.2
+
+        width = str(input(f"Enter width (in um > {wmin}) : "))
         
-        print("1 - Default mode (view trends)\n2 - Custom mode\n")
-        mode = int(input("Enter mode : "))
-
-        if mode == 1 :
-            width = '100'
-            len_list = ['0.3']
-
-            print(f"\nwidth = {width}u \nlength = {len_list[0]} \n")
-
-        elif mode == 2 :
-
-            lmin = 0.13
-            wmin = 0.2
-
-            width = str(input(f"\nEnter width (in um > {wmin}) : "))
+        while (True) :
             
-            while (True) :
-                
-                break_ = False
-                try :
-                    if float(width) < wmin :
-                        width = str(input(f"Entered width is too small. Enter width (> {wmin}um) : "))
-                        
-                    else :
-                        break_ = True
-                        
-                except :
-                    width = str(input(f"Improper width entered. Enter width (> {wmin}um) : "))
+            break_ = False
+            try :
+                if float(width) < wmin :
+                    width = str(input(f"Entered width is too small. Enter width (> {wmin}um) : "))
+                    
+                else :
+                    break_ = True
+                    
+            except :
+                width = str(input(f"Improper width entered. Enter width (> {wmin}um) : "))
 
-                if break_ :
-                    break
-                
-            len_list = str(input(f"\nEnter lengths (in um > {lmin}) (space-separated) : ")).split()
+            if break_ :
+                break
+            
+        len_list = str(input(f"\nEnter lengths (in um > {lmin}) (space-separated) : ")).split()
 
-            while (True) :
-                
-                break_ = False
-                try :
-                    if any([(float(length) < lmin) for length in len_list]) :
-                        len_list = str(input(f"At least one entered length is too small. Enter lengths (in um > {lmin}) (space-separated) : ")).split()
-                    else :
-                        break_ = True
-                        
-                except :
-                    len_list = str(input(f"Improper lengths entered. Enter lengths (in um > {lmin}) (space-separated) : ")).split()
+        while (True) :
+            
+            break_ = False
+            try :
+                if any([(float(length) < lmin) for length in len_list]) :
+                    len_list = str(input(f"At least one entered length is too small. Enter lengths (in um > {lmin}) (space-separated) : ")).split()
+                else :
+                    break_ = True
+                    
+            except :
+                len_list = str(input(f"Improper lengths entered. Enter lengths (in um > {lmin}) (space-separated) : ")).split()
 
-                if break_ :
-                    break
-        
-        else :
-            print("Entered incorrect mode. Exiting ...")
-            exit()
+            if break_ :
+                break
 
         print("\nEnter ( space-separated ) : gm/id, vdsat, gm/w, gds/w, id/w, cgs/w, cgg/w, vth, gain, ft, gmbs/w, gm/gmbs \n")
         plot_superlist = ["gm/id", "vdsat", "gm/w", "gds/w", "id/w", "cgs/w", "cgg/w", "vth", "gain", "ft", "gmbs/w", "gm/gmbs"]
@@ -102,7 +87,7 @@ def start_menu() :
         print()
 
         for length in len_list:
-            netlist = generate_netlist_circuit_1(MODEL_FILE,SAVEDATA_FILE,length,width)
+            netlist = ckt1.generate_netlist(MODEL_FILE,SAVEDATA_FILE,length,width)
             write_netlist_to_file(TMP_DIR,NETLIST_FILE,netlist)
             call(f"ngspice {NETLIST_FILE} > {LOG_FILE}",shell=True) 
             
