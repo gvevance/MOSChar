@@ -86,6 +86,7 @@ def start_menu() :
             plot_list = input("Incorrect code entered. Please re-enter : ").split()
         print()
 
+        initial_search = False
         for length in len_list:
             netlist = ckt1.generate_netlist(MODEL_FILE,SAVEDATA_FILE,length,width)
             write_netlist_to_file(TMP_DIR,NETLIST_FILE,netlist)
@@ -95,11 +96,17 @@ def start_menu() :
             data_dict = ckt1.extract_data(SAVEDATA_FILE,width)
             
             # search for operating point
-            ckt1.define_search_conditions(SEARCH_DEFINE_FILE)     # define search condtions
-            search_result_bool_vec = ckt1.opsearch(data_dict,SEARCH_DEFINE_FILE)
+            if not initial_search :
+                search_active = ckt1.define_search_conditions(SEARCH_DEFINE_FILE)     # define search condtions
+                initial_search = True
+            
+            if search_active :
+                search_result_bool_vec = ckt1.opsearch(data_dict,SEARCH_DEFINE_FILE)
+            else :
+                search_result_bool_vec = False
 
             # plotting
-            ckt1.plot_from_data_dict(data_dict,search_result_bool_vec,length,plot_list)
+            ckt1.plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,plot_list)
             
         ckt1.show_plots()
 

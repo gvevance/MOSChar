@@ -110,6 +110,8 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
         Range is to be entered carefully. If you want gm/W > 10, enter the range as "10 10000",
         i.e., 10 and a very large number. '''
     
+    search_active = False
+
     print("\nWhat parameters do you have constraints on ? Enter appropriate code ...\n")
     print("\"gm_wid\" - gm/W \n\"gds_wid\" - gds/W \n\"gain\" - gm/gds \n\"ft\" - ft ")
     
@@ -140,6 +142,7 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
 
                 if break_ :
                     c_file.write("gm/W "+gm_wid_min+" "+gm_wid_max+"\n")
+                    search_active = True
                     break 
 
         elif (ret == "gds_wid"):
@@ -160,6 +163,7 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
 
                 if break_ :
                     c_file.write("gds/W "+gds_wid_min+" "+gds_wid_max+"\n")
+                    search_active = True
                     break
                 
         elif (ret == "gain"):
@@ -180,6 +184,7 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
 
                 if break_ :
                     c_file.write("gain "+gain_min+" "+gain_max+"\n")
+                    search_active = True
                     break
 
         elif (ret == "ft"):
@@ -199,11 +204,14 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
 
                 if break_ :
                     c_file.write("ft "+ft_min+" "+ft_max+"\n")
+                    search_active = True
                     break
                 
         else :
             c_file.close()
             break
+    
+    return search_active
 
 
 def opsearch(data_dict,SEARCH_DEFINE_FILE) :
@@ -257,9 +265,7 @@ def opsearch(data_dict,SEARCH_DEFINE_FILE) :
     return bool_vec
 
 
-
-
-def plot_from_data_dict(data_dict,search_result_bool_vec,length,plot_list):
+def plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,plot_list):
 
     vgs = data_dict["vgs"]
     gm_by_id = data_dict["gm_by_id"]
@@ -274,11 +280,6 @@ def plot_from_data_dict(data_dict,search_result_bool_vec,length,plot_list):
     ft = data_dict["ft"]
     gmbs_wid = data_dict["gmbs_wid"]
     gm_by_gmbs = data_dict["gm_by_gmbs"]
-
-    search_active = False
-    if False in search_result_bool_vec :
-        search_active = True
-        print("search is active")
 
     if any([x for x in plot_list if x != "gm/id"]) :
         x = input("Plot versus gm/id or vgs ? : (1/2) ")
@@ -552,6 +553,7 @@ def plot_from_data_dict(data_dict,search_result_bool_vec,length,plot_list):
 
             if search_active :
                 plt.plot(vgs[search_result_bool_vec],gm_by_gmbs[search_result_bool_vec],'g*')
+
 
 def show_plots() :
     plt.show()
