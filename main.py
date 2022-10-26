@@ -25,7 +25,7 @@ def start_menu() :
 3. Diode connected PMOS, fixed width and VSG sweep \n4. Diode connected PMOS ,fixed Id and width sweep ")
     circuit = input("\nEnter circuit configuration to simulate : ")
     
-    CWD, MODEL_DIR, MODEL_FILE, DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE, SEARCH_DEFINE_FILE = init_setup(circuit)
+    CWD, MODEL_DIR, MODEL_FILE, DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE_FORMAT, SEARCH_DEFINE_FILE = init_setup(circuit)
 
     if circuit == '1' :
 
@@ -80,9 +80,17 @@ def start_menu() :
 
         initial_search = False
         for length in len_list:
-            netlist = ckt1.generate_netlist(MODEL_FILE,SAVEDATA_FILE,length,width)
-            write_netlist_to_file(DIR,NETLIST_FILE,netlist)
-            call(f"ngspice {NETLIST_FILE} > {LOG_FILE}",shell=True) 
+
+            SAVEDATA_FILE = SAVEDATA_FILE_FORMAT.split(".txt")[0]+'_W_'+width+'_L_'+length+'.txt'
+
+            regen = 'y'
+            if os.path.exists(SAVEDATA_FILE) :
+                regen = input(f"Save data exists for the configuration W={width}u L={length}u. Re-simulate ? [y/N] : ")
+
+            if regen in ['y','Y'] :
+                netlist = ckt1.generate_netlist(MODEL_FILE,SAVEDATA_FILE,length,width)
+                write_netlist_to_file(DIR,NETLIST_FILE,netlist)
+                call(f"ngspice {NETLIST_FILE} > {LOG_FILE}",shell=True) 
             
             # post processing
             data_dict = ckt1.extract_data(SAVEDATA_FILE,width)
@@ -90,7 +98,7 @@ def start_menu() :
             # search for operating point
             if not initial_search :
                 search_active = ckt1.define_search_conditions(SEARCH_DEFINE_FILE)     # define search condtions
-                initial_search = True
+                initial_search = True                                                 # don't prompt search for each length
             
             if search_active :
                 search_result_bool_vec = ckt1.opsearch(data_dict,SEARCH_DEFINE_FILE)
