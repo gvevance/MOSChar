@@ -121,8 +121,9 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
 
     c_file = open(SEARCH_DEFINE_FILE,'a') 
 
+    print()
     while(True):
-        ret = input("\nEnter option : ").strip()
+        ret = input("Enter option : ").strip()
             
         if (ret == "gm_wid") :
             while (True) :
@@ -207,9 +208,12 @@ def define_search_conditions(SEARCH_DEFINE_FILE) :
                     search_active = True
                     break
                 
-        else :
+        elif (ret == "") :
             c_file.close()
             break
+
+        else :
+            print("Wrong option entered.",end=' ')
     
     return search_active
 

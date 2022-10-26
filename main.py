@@ -4,10 +4,7 @@ Program starts from here.  '''
 
 from subprocess import call
 import os
-# import numpy as np
-# import matplotlib.pyplot as plt
 
-# from Demo.nmos_plotparams import nmos_plot_demo_1
 from Demo.pmos_plotparams import pmos_plot_demo_1
 from Demo.nmos_plotparams2 import nmos_plot_demo_2
 from Demo.pmos_plotparams2 import pmos_plot_demo_2
@@ -20,20 +17,15 @@ import helper_functions.circuit2 as ckt2
 import helper_functions.circuit3 as ckt3
 import helper_functions.circuit4 as ckt4
 
-# from Demo.nmos_opsearch import nmos_opsearch_demo_1
-# from Demo.pmos_opsearch import pmos_opsearch_demo_1
-# from Demo.nmos_opsearch2 import nmos_opsearch_demo_2
-# from Demo.pmos_opsearch2 import pmos_opsearch_demo_2
-
 
 def start_menu() :
 
-    CWD, MODEL_DIR, MODEL_FILE, TMP_DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE, SEARCH_DEFINE_FILE = init_setup()
-    print(CWD,MODEL_DIR,MODEL_FILE,TMP_DIR,NETLIST_FILE,LOG_FILE,SAVEDATA_FILE)
 
     print("\n1. Diode connected NMOS, fixed width and VGS sweep \n2. Diode connected NMOS, fixed Id and width sweep \n\
 3. Diode connected PMOS, fixed width and VSG sweep \n4. Diode connected PMOS ,fixed Id and width sweep ")
     circuit = input("\nEnter circuit configuration to simulate : ")
+    
+    CWD, MODEL_DIR, MODEL_FILE, DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE, SEARCH_DEFINE_FILE = init_setup(circuit)
 
     if circuit == '1' :
 
@@ -89,7 +81,7 @@ def start_menu() :
         initial_search = False
         for length in len_list:
             netlist = ckt1.generate_netlist(MODEL_FILE,SAVEDATA_FILE,length,width)
-            write_netlist_to_file(TMP_DIR,NETLIST_FILE,netlist)
+            write_netlist_to_file(DIR,NETLIST_FILE,netlist)
             call(f"ngspice {NETLIST_FILE} > {LOG_FILE}",shell=True) 
             
             # post processing
@@ -114,12 +106,14 @@ def start_menu() :
     elif circuit == '2' :
         nmos_plot_demo_2()
 
+
     elif circuit == '3' :
         pmos_plot_demo_1()
 
+
     elif circuit == '4' :
         pmos_plot_demo_2()
-        pass
+
 
     else :
         print("Entered incorrect option. Exiting ... ")
@@ -131,6 +125,7 @@ def main():
     print(opening_message)
     
     start_menu()
+
 
 if __name__ == "__main__" :
     main()
