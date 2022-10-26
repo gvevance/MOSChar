@@ -23,8 +23,8 @@ def start_menu() :
 
     print("\n1. Diode connected NMOS, fixed width and VGS sweep \n2. Diode connected NMOS, fixed Id and width sweep \n\
 3. Diode connected PMOS, fixed width and VSG sweep \n4. Diode connected PMOS ,fixed Id and width sweep ")
-    circuit = input("\nEnter circuit configuration to simulate : ")
     
+    circuit = input("\nEnter circuit configuration to simulate : ")
     CWD, MODEL_DIR, MODEL_FILE, DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE_FORMAT, SEARCH_DEFINE_FILE = init_setup(circuit)
 
     if circuit == '1' :

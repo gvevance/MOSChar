@@ -22,15 +22,15 @@ def init_setup(circuit) :
     if not os.path.exists(DIR) :
         os.makedirs(DIR)
         
-    NETLIST_FILE = os.path.join(DIR,'circuit1.cir')     # TODO change to appropriate naming convention
-    LOG_FILE = os.path.join(DIR,'circuit1.log')         # TODO change to appropriate naming convention
-    SAVEDATA_FILE = os.path.join(DIR,'savedata.txt')    # TODO change to appropriate naming convention
+    NETLIST_FILE = os.path.join(DIR,'circuit1.cir')
+    LOG_FILE = os.path.join(DIR,'circuit1.log')
+    SAVEDATA_FILE_FORMAT = os.path.join(DIR,'savedata.txt')
     SEARCH_DEFINE_FILE = os.path.join(DIR,'search_definition.txt')
 
     if not os.path.exists(DIR) :
         os.makedirs(DIR)
 
-    return CWD, MODEL_DIR, MODEL_FILE, DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE, SEARCH_DEFINE_FILE
+    return CWD, MODEL_DIR, MODEL_FILE, DIR, NETLIST_FILE, LOG_FILE, SAVEDATA_FILE_FORMAT, SEARCH_DEFINE_FILE
 
 
 def write_netlist_to_file(directory,NETLIST_FILE,contents):
