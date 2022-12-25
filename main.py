@@ -3,7 +3,7 @@ main.py
 Program starts from here.  '''
 
 from subprocess import call
-import os
+from os.path import exists
 from helper_functions.general import init_setup
 from helper_functions.general import write_netlist_to_file
 import helper_functions.circuit as ckt
@@ -69,7 +69,7 @@ def start_menu() :
         SAVEDATA_FILE = SAVEDATA_FILE_FORMAT.split(".txt")[0]+'_W_'+width+'_L_'+length+'.txt'
 
         regen = 'y'
-        if os.path.exists(SAVEDATA_FILE) :
+        if exists(SAVEDATA_FILE) :
             regen = input(f"Save data exists for the configuration W={width}u L={length}u. Re-simulate ? [y/N] : ")
 
         if regen in ['y','Y'] :
