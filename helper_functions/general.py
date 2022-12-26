@@ -1,6 +1,6 @@
 # general helper functions
 
-from os import getcwd, makedir, makedirs
+from os import getcwd, makedirs
 from os.path import exists, join
 
 
@@ -28,7 +28,7 @@ def init_setup() :
 def write_netlist_to_file(directory,NETLIST_FILE,contents):
     
     if not exists(directory) :
-        makedir(directory)
+        makedirs(directory)
 
     with open(NETLIST_FILE,'w+') as file :
         file.write(contents)

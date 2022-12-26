@@ -63,7 +63,11 @@ def start_menu() :
         plot_list = input("Incorrect code entered. Please re-enter : ").split()
     print()
 
+
     initial_search = False
+    initial_plot = True
+    plot_option = None
+
     for length in len_list:
 
         SAVEDATA_FILE = SAVEDATA_FILE_FORMAT.split(".txt")[0]+'_W_'+width+'_L_'+length+'.txt'
@@ -91,8 +95,9 @@ def start_menu() :
             search_result_bool_vec = False
 
         # plotting
-        ckt.plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,plot_list)
-        
+        plot_option = ckt.plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,plot_list,plot_versus=(initial_plot,plot_option))
+        initial_plot = False    
+
     ckt.show_plots()
 
 

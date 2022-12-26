@@ -269,7 +269,10 @@ def opsearch(data_dict,SEARCH_DEFINE_FILE) :
     return bool_vec
 
 
-def plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,plot_list):
+def plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,plot_list,plot_versus):
+
+    # plot_versus_ask is a tuple with True and x option which is fed back to the function if 
+    # "Plot versus gm/id or vgs ? : (1/2) " has already been answered.
 
     vgs = data_dict["vgs"]
     gm_by_id = data_dict["gm_by_id"]
@@ -286,7 +289,12 @@ def plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,pl
     gm_by_gmbs = data_dict["gm_by_gmbs"]
 
     if any([x for x in plot_list if x != "gm/id"]) :
-        x = input("Plot versus gm/id or vgs ? : (1/2) ")
+        
+        if plot_versus[0] :
+            x = input("Plot versus gm/id or vgs ? : (1/2) ")
+        else :
+            x = plot_versus[1]
+
         while x not in ['1','2'] :
             x = input("Invalid input entered. Plot versus gm/id or vgs ? : (1/2) ")
         
@@ -558,6 +566,8 @@ def plot_from_data_dict(data_dict,search_active,search_result_bool_vec,length,pl
             if search_active :
                 plt.plot(vgs[search_result_bool_vec],gm_by_gmbs[search_result_bool_vec],'g*')
 
+
+    return x
 
 def show_plots() :
     plt.show()
